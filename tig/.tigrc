@@ -1,0 +1,19 @@
+bind generic + !git commit --amend
+bind main r !git commit --fixup=%(commit)
+bind main R !git rebase -i %(commit)^ --autosquash
+bind main w !git revert --no-commit %(commit)
+bind main <Space> refresh
+bind main $ !git cherry-pick %(commit)
+
+# Jump to the nest jump with Enter in Stage view
+bind stage <Down> :/^@@
+bind stage <Up> :?^@@
+
+# Custom refresh mode
+set refresh-mode = auto
+set main-view-id = yes
+set main-view-id-width = 8
+
+set main-view-date = custom
+set main-view-date-format = "%Y-%m-%d %H:%M"
+
