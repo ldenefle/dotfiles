@@ -1,0 +1,9 @@
+#!/bin/sh
+
+MUSIC_DIR=$HOME/Documents/Musique
+
+rsync -avhu --exclude '*.part' --progress -e ssh lucas@seedbox:/home/lucas/media/files/* $MUSIC_DIR
+find $MUSIC_DIR -type f -ctime -3 -and \( -name "*.mp3" -o -name "*.flac" \) | sort > $HOME/.mpd/playlists/recent.m3u
+mpc update
+
+

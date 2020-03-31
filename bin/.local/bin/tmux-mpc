@@ -1,0 +1,11 @@
+#!/bin/bash
+
+song=$(mpc current)
+if [[ -n $(mpc status | grep "\[playing\]") ]]; then
+    status_color=#[fg=green]
+else
+    status_color=#[fg=red]
+fi
+
+[ -n "$song" ] && echo "  #[fg=blue]♫ :: $status_color$song"
+

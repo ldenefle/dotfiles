@@ -1,0 +1,3 @@
+#!/bin/sh
+
+rsync $HOME/Downloads/*torrent lucas@seedbox:/home/lucas/media/torrents/ --remove-source-files --verbose -e 'ssh -v'
