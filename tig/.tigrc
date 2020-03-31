@@ -1,13 +1,22 @@
-bind generic + !git commit --amend
+bind generic + !git commit --amend --no-edit
 bind main r !git commit --fixup=%(commit)
 bind main R !git rebase -i %(commit)^ --autosquash
 bind main w !git revert --no-commit %(commit)
 bind main <Space> refresh
 bind main $ !git cherry-pick %(commit)
+bind main <Ctrl-f> scroll-page-down
+bind main <Ctrl-b> scroll-page-up
+bind generic 0 !@sh -c  "git blame -L %(lineno),+1 %(file) | awk '{print $1}'"
+bind generic 9 !@sh -c "echo -n %(commit) | xclip -selection c"
+
+bind main g move-first-line
+bind main G move-last-line
 
 # Jump to the nest jump with Enter in Stage view
 bind stage <Down> :/^@@
 bind stage <Up> :?^@@
+bind diff <Down> :/^@@
+bind diff <Up> :?^@@
 
 # Custom refresh mode
 set refresh-mode = auto
