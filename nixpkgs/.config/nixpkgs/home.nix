@@ -57,7 +57,7 @@ in
   programs.neovim = {
     enable = true;
     vimAlias = true;
-    extraConfig = builtins.readFile ./extra/.vimrc;
+    extraConfig = builtins.readFile (./extra + ("/." + host + "_vimrc")) + builtins.readFile (./extra/.common_vimrc);
 
     plugins = with pkgs.vimPlugins; [
       # Syntax / Language Support ##########################
@@ -67,6 +67,7 @@ in
       vim-markdown # markdown
 
       # UI #################################################
+      wal-vim
       ayu-vim # colorscheme
       vim-tmux-navigator
       vim-cpp-enhanced-highlight
