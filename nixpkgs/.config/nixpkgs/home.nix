@@ -4,6 +4,10 @@ let
   relativeXDGConfigPath = "$HOME/.config";
   relativeXDGDataPath = "$HOME/.local/share";
   relativeXDGCachePath = "$HOME/.cache";
+  host = {
+    x86_64-darwin = "mac";
+    x86_64-linux  = "linux";
+  }.${builtins.currentSystem} or (throw "Unsupported system: ${builtins.currentSystem}");
 in
 {
   # Let Home Manager install and manage itself.
@@ -116,8 +120,13 @@ in
       PATH = "$HOME/.local/bin:$PATH";
       TERM = "xterm-256color";
       FZF_DEFAULT_COMMAND = "fd --type f";
+      LANG = "en_US.UTF-8";
+      LC_ALL = "C";
+      LANGUAGE = "en_US.UTF-8";
+      LC_CTYPE = "en_US.UTF-8";
     };
-    initExtra = builtins.readFile ./extra/post-comp.zsh;
+
+    initExtra = builtins.readFile (./extra/common.zsh) + builtins.readFile (./extra + ("/" + host + ".zsh"));
   };
 
   programs.go = {
