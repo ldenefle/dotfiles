@@ -92,8 +92,6 @@ in
 
   programs.zsh = {
     enable = true;
-    enableCompletion = true;
-    enableAutosuggestions = true;
     history = {
       path = "${relativeXDGDataPath}/zsh/.zsh_history";
       size = 50000;

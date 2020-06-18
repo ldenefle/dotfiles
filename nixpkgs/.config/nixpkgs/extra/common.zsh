@@ -17,10 +17,7 @@ export MUSIC_DIR="$HOME/Documents/Musique"
 
 [ -f $HOME/.nix-profile/etc/profile.d/nix.sh ] && $HOME/.nix-profile/etc/profile.d/nix.sh
 
-alias gd='cd ~/_CODE/geodude-hw-app'
-alias on='cd ~/_CODE/onix-hw-app'
 alias l='exa -la'
-
 
 # Prompt related stuff
 # Get git branch on the right side
@@ -47,7 +44,7 @@ function zle-line-finish {
   vim_mode=$vim_ins_mode
 }
 zle -N zle-line-finish
-PROMPT='%(?.%F{green}√.%F{red}?%?)%f %B%F{blue}%1~%f%b ${vim_mode}'
+PROMPT='%(?.%F{blue}%1~%f.%F{red}%1~%f) %B${vim_mode}%b'
 
 # Fix a bug when you C-c in CMD mode and you'd be prompted with CMD mode indicator, while in fact you would be in INS mode
 # Fixed by catching SIGINT (C-c), set vim_mode to INS and then repropagate the SIGINT, so if anything else depends on it, we will not break it

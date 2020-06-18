@@ -16,4 +16,6 @@ export POLYBAR_RAMP_7="━━━━━━━"
 
 # For pywal
 export PATH="${PATH}:${HOME}/.local/bin/"
+alias gd="cd /home/lucas/_CODE/Converge/geodude-hw-app"
+
 
