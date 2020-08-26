@@ -12,7 +12,7 @@ bindkey		'^O' 	fe
 
 export MUSIC_DIR="$HOME/Documents/Musique"
 
- export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
+export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
 . $HOME/.local/miniconda3/etc/profile.d/conda.sh
 
 [ -f $HOME/.nix-profile/etc/profile.d/nix.sh ] && $HOME/.nix-profile/etc/profile.d/nix.sh
@@ -53,3 +53,8 @@ function TRAPINT() {
   vim_mode=$vim_ins_mode
   return $(( 128 + $1 ))
 }
+
+setopt AUTO_CD
+
+# Direnv 
+eval "$(direnv hook zsh)"

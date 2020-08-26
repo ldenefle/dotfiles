@@ -123,30 +123,14 @@ command GenSource :r $HOME/.vim/resources/c_source.txt
 command GenHeader :r $HOME/.vim/resources/c_header.txt
 
 
-" Complete using tab section
-filetype plugin on
-set omnifunc=syntaxcomplete#Complete
-function! Smart_TabComplete()
-  let line = getline('.')                         " current line
+" Deoplete
+let g:deoplete#enable_at_startup = 1
 
-  let substr = strpart(line, -1, col('.')+1)      " from the start of the current
-                                                  " line to one character right
-                                                  " of the cursor
-  let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
-  if (strlen(substr)==0)                          " nothing to match on empty string
-    return "\<tab>"
-  endif
-  let has_period = match(substr, '\.') != -1      " position of period, if any
-  let has_slash = match(substr, '\/') != -1       " position of slash, if any
-  if pumvisible()
-    return "\<C-N>"
-  elseif (!has_period && !has_slash)
-    return "\<C-X>\<C-P>"                         " existing text matching
-  elseif ( has_slash )
-    return "\<C-X>\<C-F>"                         " file matching
-  else
-    return "\<C-X>\<C-O>"                         " plugin matching
-  endif
-endfunction
+" Remap TAB and shift tab to select completion candidate
+inoremap <silent><expr> <TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+" <CR>: close popup and save indent.
+inoremap <silent><expr><CR> pumvisible() ? deoplete#close_popup() : "\<CR>"
 
-inoremap <tab> <c-r>=Smart_TabComplete()<CR>
+" To be used with gdb, create a breakpoint from the current file and line
+nmap <leader>gdb :let @+ = "b " . expand("%") . ":" . line(".")<cr>

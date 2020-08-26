@@ -39,6 +39,7 @@ in
     poetry
     python3
     ranger
+    sd
     tig
     tmux
     uncrustify
@@ -73,6 +74,7 @@ in
       vim-cpp-enhanced-highlight
 
       # Editor Features ####################################
+      deoplete-nvim
       vim-sensible
       vim-unimpaired
       vim-surround
@@ -120,8 +122,7 @@ in
       TERM = "xterm-256color";
       FZF_DEFAULT_COMMAND = "fd --type f";
       LANG = "en_US.UTF-8";
-      LC_ALL = "C";
-      LANGUAGE = "en_US.UTF-8";
+      LC_ALL = "en_US.UTF-8";
       LC_CTYPE = "en_US.UTF-8";
     };
 
@@ -132,7 +133,6 @@ in
     enable = true;
     goPath = "_CODE/go";
   };
-
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
