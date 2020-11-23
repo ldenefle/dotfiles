@@ -28,9 +28,6 @@ in
     go
     htop
     lorri
-    mpd
-    mpc_cli
-    ncmpcpp
     neofetch
     niv
     pass
@@ -41,7 +38,6 @@ in
     ranger
     sd
     tig
-    tmux
     uncrustify
     wireguard
     wireguard-go
@@ -121,9 +117,6 @@ in
       PATH = "$HOME/.local/bin:$PATH";
       TERM = "xterm-256color";
       FZF_DEFAULT_COMMAND = "fd --type f";
-      LANG = "en_US.UTF-8";
-      LC_ALL = "en_US.UTF-8";
-      LC_CTYPE = "en_US.UTF-8";
     };
 
     initExtra = builtins.readFile (./extra/common.zsh) + builtins.readFile (./extra + ("/" + host + ".zsh"));

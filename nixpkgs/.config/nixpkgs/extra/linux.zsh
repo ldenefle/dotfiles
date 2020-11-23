@@ -1,5 +1,5 @@
 # To make new terminals use pywall
-(cat ~/.cache/wal/sequences &)
+[[ -f ~/.cache/wal ]] && cat ~/.cache/wal/sequences &
 
 # Use for keyboard backlight 
 alias -g "kbd_backlight"="/bin/bash /usr/local/share/kbd_backlight"

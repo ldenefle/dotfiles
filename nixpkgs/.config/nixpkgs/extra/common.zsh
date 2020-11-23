@@ -13,9 +13,9 @@ bindkey		'^O' 	fe
 export MUSIC_DIR="$HOME/Documents/Musique"
 
 export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
-. $HOME/.local/miniconda3/etc/profile.d/conda.sh
+[ -f $HOME/.nix-profile/etc/profile.d/nix.sh ] && . $HOME/.nix-profile/etc/profile.d/nix.sh
 
-[ -f $HOME/.nix-profile/etc/profile.d/nix.sh ] && $HOME/.nix-profile/etc/profile.d/nix.sh
+[ -f $HOME/.local/miniconda3/etc/profile.d/conda.sh ] && . $HOME/.local/miniconda3/etc/profile.d/conda.sh
 
 alias l='exa -la'
 
