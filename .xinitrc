@@ -1,3 +1,4 @@
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
-kbdrate -d 2
+xbindkeys
+xset r rate 300 40
 exec dwm
