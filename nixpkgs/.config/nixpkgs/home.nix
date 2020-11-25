@@ -117,6 +117,9 @@ in
       PATH = "$HOME/.local/bin:$PATH";
       TERM = "xterm-256color";
       FZF_DEFAULT_COMMAND = "fd --type f";
+      LOCALE_ARCHIVE_2_11 = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+      LOCALE_ARCHIVE_2_27 = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+      LOCALE_ARCHIVE="/usr/bin/locale";
     };
 
     initExtra = builtins.readFile (./extra/common.zsh) + builtins.readFile (./extra + ("/" + host + ".zsh"));
