@@ -9,5 +9,8 @@ xbindkeys
 xset r rate 300 40
 
 # Gets rid of mouse when not using it
-unclutter &
+/usr/bin/unclutter &
+# Notification service
+/usr/bin/dunst &
+
 exec dwm
