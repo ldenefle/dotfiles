@@ -47,6 +47,9 @@
 "pactl set-sink-mute 1 toffle"
     XF86AudioMute
 
+"i3lock -c 000000"
+    Mod4+shift+ x
+
 #"xterm -geom 50x20+20+20"
 #   Shift+Mod2+alt + s
 #
