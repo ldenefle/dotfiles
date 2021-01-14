@@ -17,4 +17,6 @@ dunst -config ~/.config/dunst/dunstrc \
 
 .local/bin/dwm-bar &
 
+# Makes sure to be on the right monitor
+autorandr -c
 exec dwm
