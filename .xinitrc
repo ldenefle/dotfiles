@@ -15,6 +15,6 @@ dunst -config ~/.config/dunst/dunstrc \
   -bf "$(xgetres color7)" \
   -frame_color "$(xgetres color7)" &
 
-dwmblocks &
+.local/bin/dwm-bar &
 
 exec dwm

@@ -32,9 +32,6 @@ in
     niv
     pass
     perl
-    pipenv
-    poetry
-    python3
     ranger
     sd
     tig
