@@ -38,14 +38,17 @@
 #keystate_scrolllock= enable
 
 # Examples of commands:
-"pactl set-sink-mute 1 false ; pactl set-sink-volume 1 +5%"
+"$HOME/.local/bin/volume.sh up"
     XF86AudioRaiseVolume
 
-"pactl set-sink-mute 1 false ; pactl set-sink-volume 1 -5%"
+"$HOME/.local/bin/volume.sh down"
     XF86AudioLowerVolume
 
-"pactl set-sink-mute 1 toffle"
+"$HOME/.local/bin/volume.sh toggle"
     XF86AudioMute
+
+"$HOME/.local/bin/screen_capture.sh"
+    control+shift+4
 
 "i3lock -c 000000"
     Mod4+shift+ x
