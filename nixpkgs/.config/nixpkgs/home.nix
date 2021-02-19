@@ -48,43 +48,6 @@ in
     enableZshIntegration = true;
   };
 
-  programs.neovim = {
-    enable = true;
-    vimAlias = true;
-    extraConfig = builtins.readFile (./extra + ("/." + host + "_vimrc")) + builtins.readFile (./extra/.common_vimrc);
-
-    plugins = with pkgs.vimPlugins; [
-      # Syntax / Language Support ##########################
-      vim-nix
-      rust-vim # rust
-      vim-go # go
-      vim-markdown # markdown
-
-      # UI #################################################
-      wal-vim
-      ayu-vim # colorscheme
-      vim-tmux-navigator
-      vim-cpp-enhanced-highlight
-
-      # Editor Features ####################################
-      deoplete-nvim
-      vim-sensible
-      vim-unimpaired
-      vim-surround
-      vim-repeat
-      vim-commentary
-      vim-easy-align
-      vim-better-whitespace
-      vim-bufkill
-
-      # Buffer / Pane / File Management ####################
-      fzf-vim # all the things
-
-      # Panes / Larger features ############################
-      vim-fugitive # Gblame
-    ];
-  };
-
   programs.zsh = {
     enable = true;
     history = {
