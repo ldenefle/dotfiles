@@ -67,15 +67,15 @@ font:
   # The normal (roman) font face to use.
   # Style can be specified to pick a specific face.
   normal:
-    family: CozetteVector
+    family: Cozette
 
   # The bold font face
   bold:
-    family: CozetteVector
+    family: Cozette
 
   # The italic font face
   italic:
-    family: CozetteVector
+    family: Cozette
 
   # Point size of the font
   size: 7.5
