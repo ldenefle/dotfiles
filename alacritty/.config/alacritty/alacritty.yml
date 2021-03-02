@@ -56,7 +56,7 @@ window:
 scrolling:
   # maximum number of lines in the scrollback buffer. Specifying '0' will
   # disable scrolling.
-  history: 0
+  history: 10000
 
   # Number of lines the viewport will move for every line scrolled when
   # scrollback is enabled (history > 0).
@@ -275,7 +275,7 @@ key_bindings:
   - { key: V,        mods: Command,       action: Paste                        }
   - { key: C,        mods: Command,       action: Copy                         }
   - { key: Q,        mods: Command,       action: Quit                         }
-  - { key: N,        mods: Command,       action: SpawnNewInstance             }
+  - { key: Return,   mods: Control|Shift, action: SpawnNewInstance             }
   - { key: Return,   mods: Command,       action: ToggleFullscreen             }
   - { key: Equals,   mods: Command,       action: IncreaseFontSize             }
   - { key: Minus,    mods: Command,       action: DecreaseFontSize             }
