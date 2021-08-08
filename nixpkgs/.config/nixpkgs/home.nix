@@ -13,82 +13,11 @@ in
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   home.packages = with pkgs; [
-    ag
-    ccache
-    cmake
-    cscope
-    ctags
-    curl
-    exa
-    fd
     direnv
-    dfu-util
-    git
-    gitAndTools.hub
-    go
-    htop
     lorri
-    neofetch
     niv
-    pass
-    perl
-    ranger
-    sd
-    tig
-    uncrustify
-    wireguard
-    wireguard-go
-    wireguard-tools
-    wget
-    zsh
   ];
 
-  programs.fzf = {
-    enable = true;
-    enableZshIntegration = true;
-  };
-
-  programs.zsh = {
-    enable = true;
-    history = {
-      path = "${relativeXDGDataPath}/zsh/.zsh_history";
-      size = 50000;
-      save = 50000;
-    };
-
-    plugins = [
-      {
-        name = "zsh-syntax-highlighting";
-        src = pkgs.fetchFromGitHub {
-          owner = "zsh-users";
-          repo = "zsh-syntax-highlighting";
-          rev = "be3882aeb054d01f6667facc31522e82f00b5e94";
-          sha256 = "0w8x5ilpwx90s2s2y56vbzq92ircmrf0l5x8hz4g1nx3qzawv6af";
-        };
-      }
-    ];
-
-    sessionVariables = rec {
-      NVIM_TUI_ENABLE_TRUE_COLOR = "1";
-      ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE = "fg=3";
-      EDITOR = "nvim";
-      VISUAL = EDITOR;
-      GIT_EDITOR = EDITOR;
-      PATH = "$HOME/.local/bin:$PATH";
-      TERM = "xterm-256color";
-      FZF_DEFAULT_COMMAND = "fd --type f";
-      LOCALE_ARCHIVE_2_11 = "${pkgs.glibcLocales}/lib/locale/locale-archive";
-      LOCALE_ARCHIVE_2_27 = "${pkgs.glibcLocales}/lib/locale/locale-archive";
-      LOCALE_ARCHIVE="/usr/bin/locale";
-    };
-
-    initExtra = builtins.readFile (./extra/common.zsh) + builtins.readFile (./extra + ("/" + host + ".zsh"));
-  };
-
-  programs.go = {
-    enable = true;
-    goPath = "_CODE/go";
-  };
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
