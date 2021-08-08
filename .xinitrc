@@ -2,6 +2,9 @@
 xbindkeys
 xset r rate 300 40
 
+hsetroot -solid '#000000'
+picom --no-dnd-shadow --no-fading-openclose &
+
 # Gets rid of mouse when not using it
 /usr/bin/unclutter &
 # Notification service
