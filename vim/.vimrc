@@ -15,13 +15,8 @@ Plug 'christoomey/vim-tmux-navigator'
 
 " # Editor Features ####################################
 if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
-Plug 'zchee/deoplete-clang'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
@@ -30,6 +25,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/vim-easy-align'
 Plug 'ntpeters/vim-better-whitespace'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " # Buffer / Pane / File Management ####################
 Plug 'junegunn/fzf'
@@ -112,7 +108,7 @@ map <leader>m :wa<cr> :make<cr>
 " Delete the buffer
 map <leader>x :bd<cr>
 " Open cwindow
-map <Leader>c :cwindow<CR>
+map <Leader>w :cwindow<CR>
 map <Leader>x :BD<CR>
 
 " Shortcut for ctags
@@ -172,8 +168,11 @@ command GenSource :r $HOME/.vim/resources/c_source.txt
 command GenHeader :r $HOME/.vim/resources/c_header.txt
 
 
-" Deoplete
-let g:deoplete#enable_at_startup = 1
+" Coc.nvim
+" caller
+map <Leader>c :call CocLocations('ccls','$ccls/call')<cr>
+" callee
+map <Leader>C :call CocLocations('ccls','$ccls/call',{'callee':v:true})<cr>
 
 
 " Remap TAB and shift tab to select completion candidate
@@ -187,3 +186,4 @@ nmap <leader>gdb :let @+ = "b " . expand("%") . ":" . line(".")<cr>
 
 " Disable unsafe commands in project specific vimrc
 set secure
+
