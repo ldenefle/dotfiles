@@ -6,8 +6,8 @@ dwm_memory () {
   echo "Memory";
   memory=$(free -m | grep Mem | awk '{print $3}') ; memory=""$memory"M" && echo $memory;}
 dwm_package () {
-  echo "Package";
-  pacman -Q | wc -l;}
+  echo "Battery";
+  cat /sys/class/power_supply/BAT0/capacity;}
 dwm_audio () {
   echo "Audio";
   pamixer --get-volume-human;}
