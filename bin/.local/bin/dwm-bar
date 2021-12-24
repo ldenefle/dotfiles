@@ -1,34 +1,57 @@
 #!/bin/sh
+
+RED="#d08770"
+BLACK="#2e3440"
+BLUE="#5e81ac"
+GREEN="#a3be8c"
+YELLOW="#ebcb8b"
+
 dwm_root () {
-  echo "Root";
-  df -H --block-size M /dev/sda3 | tail -1 | awk '{print $3}';}
+    echo "Root";
+    df -H --block-size M /dev/sda3 | tail -1 | awk '{print $3}';
+}
+
 dwm_memory () {
-  echo "Memory";
-  memory=$(free -m | grep Mem | awk '{print $3}') ; memory=""$memory"M" && echo $memory;}
+    root_used=$(df -h / | grep / | awk '{print $5}');
+    home_used=$(df -h $HOME | grep / | awk '{print $5}');
+    echo "/ $root_used ~ $home_used";
+}
+
 dwm_package () {
-  echo "Battery";
-  cat /sys/class/power_supply/BAT0/capacity;}
+    echo "Battery";
+    cat /sys/class/power_supply/BAT0/capacity;
+}
+
 dwm_audio () {
-  echo "Audio";
-  pamixer --get-volume-human;}
+    echo "Audio";
+    amixer get Master | awk -F'[][]' 'END{ print $2 }';
+}
+
 dwm_time () {
-  echo "Time";
-  date +"%H:%M:%S";}
+    echo "Time";
+    date +"%H:%M:%S";
+}
+
 dwm_date () {
-  echo "Date";
-  date +"%a-%d/%m/%Y";}
+    echo "Date";
+    date +"%a-%d/%m/%Y";
+}
+
+dwm_ble_audio () {
+    $HOME/.local/bin/bluetooth_headphones_status.sh;
+}
 
 while true
-  do
+do
     status="^f-1^"
-    status="$status^b#d08770^^c#2e3440^ "$(dwm_root)" "
-    status="$status^b#2e3440^^c#d08770^ "$(dwm_memory)" "
-    status="$status^b#ebcb8b^^c#2e3440^ "$(dwm_package)" "
-    status="$status^b#a3be8c^^c#2e3440^ "$(dwm_audio)" "
-    status="$status^b#5e81ac^^c#2e3440^ "$(dwm_time)" "
-    status="$status^b#2e3440^^c#5e81ac^ "$(dwm_date)" "
+    ble_audio=$(dwm_ble_audio)
+    [ ! -z "$ble_audio" ] && status="$status^b$RED^^c$BLACK^ "$ble_audio" "
+    status="$status^b$BLACK^^c$RED^ "$(dwm_memory)" "
+    status="$status^b$YELLOW^^c$BLACK^ "$(dwm_package)" "
+    status="$status^b$GREEN^^c$BLACK^ "$(dwm_audio)" "
+    status="$status^b$BLUE^^c$BLACK^ "$(dwm_time)" "
+    status="$status^b$BLACK^^c$BLUE^ "$(dwm_date)" "
     status="$status^f-1^"
-
     xsetroot -name "$(echo $status)"
     sleep 1
 done
