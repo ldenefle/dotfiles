@@ -21,7 +21,7 @@ function send_notification {
     # https://en.wikipedia.org/wiki/Box-drawing_character
     bar=$(seq -s "─" $(($volume / 5)) | sed 's/[0-9]//g')
     # Send the notification
-    dunstify -i audio-on -t $TIMEOUT_MS -r 2593 -u normal "    $bar"
+    dunstify -i audio-on -t $TIMEOUT_MS -r 2593 -u normal "Volume: $volume %"
 }
 
 case $1 in
