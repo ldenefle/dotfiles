@@ -17,9 +17,12 @@ dwm_memory () {
     echo "/ $root_used ~ $home_used";
 }
 
-dwm_package () {
-    echo "Battery";
-    cat /sys/class/power_supply/BAT0/capacity;
+dwm_battery () {
+    BAT="/sys/class/power_supply/BAT0/capacity"
+    if [ -f "$BAT" ]; then
+        echo "Battery";
+        cat $BAT;
+    fi
 }
 
 dwm_audio () {
@@ -45,9 +48,10 @@ while true
 do
     status="^f-1^"
     ble_audio=$(dwm_ble_audio)
+    battery=$(dwm_battery)
     [ ! -z "$ble_audio" ] && status="$status^b$RED^^c$BLACK^ "$ble_audio" "
     status="$status^b$BLACK^^c$RED^ "$(dwm_memory)" "
-    status="$status^b$YELLOW^^c$BLACK^ "$(dwm_package)" "
+    [ ! -z "$dwm_battery" ] && status="$status^b$YELLOW^^c$BLACK^ "$(dwm_battery)" "
     status="$status^b$GREEN^^c$BLACK^ "$(dwm_audio)" "
     status="$status^b$BLUE^^c$BLACK^ "$(dwm_time)" "
     status="$status^b$BLACK^^c$BLUE^ "$(dwm_date)" "
