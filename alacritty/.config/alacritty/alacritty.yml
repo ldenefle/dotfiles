@@ -12,6 +12,7 @@ env:
   # You can verify this by checking for the presence of `smso` and `sitm` in
   # `infocmp xterm-256color`.
   TERM: xterm-256color
+  WINIT_X11_SCALE_FACTOR: "1.66"
 
 window:
   # Window dimensions (changes require restart)
@@ -67,18 +68,18 @@ font:
   # The normal (roman) font face to use.
   # Style can be specified to pick a specific face.
   normal:
-    family: Cozette
+    family: CozetteVector
 
   # The bold font face
   bold:
-    family: Cozette
+    family: CozetteVector
 
   # The italic font face
   italic:
-    family: Cozette
+    family: CozetteVector
 
   # Point size of the font
-  size: 7.5
+  size: 8
 
   # Offset is the extra space around each character. offset.y can be thought of
   # as modifying the linespacing, and offset.x as modifying the letter spacing.
