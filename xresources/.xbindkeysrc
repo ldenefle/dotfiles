@@ -53,6 +53,10 @@
 "i3lock -c 000000"
     Mod4+shift+ x
 
+"$HOME/.local/bin/bluetooth_headphones_status.sh toggle_profile"
+    Mod4+shift+ t
+
+
 #"xterm -geom 50x20+20+20"
 #   Shift+Mod2+alt + s
 #
