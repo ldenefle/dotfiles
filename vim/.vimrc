@@ -17,7 +17,9 @@ Plug 'christoomey/vim-tmux-navigator'
 if has('nvim')
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
+Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-unimpaired'
+Plug 'm-pilia/vim-ccls'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-sensible'
@@ -111,6 +113,9 @@ map <leader>x :bd<cr>
 map <Leader>w :cwindow<CR>
 map <Leader>x :BD<CR>
 
+" Replace word under cursor with leader-s
+nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+
 " Shortcut for ctags
 " Open up the current tag in a vertical split
 map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
@@ -141,6 +146,9 @@ if version >= 700
   au InsertEnter * hi StatusLine term=reverse ctermbg=5 gui=undercurl guisp=Magenta
   au InsertLeave * hi StatusLine term=reverse ctermfg=0 ctermbg=2 gui=bold,reverse
 endif
+
+autocmd FileType typescript setlocal shiftwidth=2 softtabstop=2  tabstop=2
+autocmd FileType javascript setlocal shiftwidth=2 softtabstop=2  tabstop=2
 
 " Change the autocompletion menu
 highlight Pmenu ctermbg=blue guibg=blue
@@ -173,13 +181,22 @@ command GenHeader :r $HOME/.vim/resources/c_header.txt
 map <Leader>c :call CocLocations('ccls','$ccls/call')<cr>
 " callee
 map <Leader>C :call CocLocations('ccls','$ccls/call',{'callee':v:true})<cr>
+let g:ccls_log_file = expand('~/my_log_file.txt')
 
 
 " Remap TAB and shift tab to select completion candidate
-inoremap <silent><expr> <TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
-" <CR>: close popup and save indent.
-inoremap <silent><expr><CR> pumvisible() ? deoplete#close_popup() : "\<CR>"
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " To be used with gdb, create a breakpoint from the current file and line
 nmap <leader>gdb :let @+ = "b " . expand("%") . ":" . line(".")<cr>
