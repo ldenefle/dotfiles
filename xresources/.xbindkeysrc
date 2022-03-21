@@ -47,7 +47,7 @@
 "$HOME/.local/bin/volume.sh toggle"
     XF86AudioMute
 
-"$HOME/.local/bin/screen_capture.sh"
+"maim -s $HOME/Pictures/$(date +%s).png"
     control+shift+4
 
 "i3lock -c 000000"
