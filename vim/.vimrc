@@ -17,6 +17,7 @@ Plug 'christoomey/vim-tmux-navigator'
 if has('nvim')
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
+Plug 'preservim/nerdtree'
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-unimpaired'
 Plug 'm-pilia/vim-ccls'
