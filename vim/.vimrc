@@ -6,6 +6,10 @@ Plug 'rust-lang/rust.vim'
 " For markdown
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+" Better python highlighting
+Plug 'vim-python/python-syntax'
+Plug 'psf/black', { 'branch': 'stable' } " Python formatting
+Plug 'rhysd/vim-clang-format'
 
 " # UI #################################################
 Plug 'scrooloose/syntastic'
@@ -29,6 +33,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/vim-easy-align'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'embear/vim-localvimrc'
 
 " # Buffer / Pane / File Management ####################
 Plug 'junegunn/fzf'
@@ -171,12 +176,8 @@ set tags=./tags;/
 
 " This section is used only for the geodude related C projects
 map <Space><Space> <Esc>/<++><CR><Esc>cf>
-command GenDoc :r $HOME/.vim/resources/c_documentation.txt
-command GenFunc :r $HOME/.vim/resources/c_function.txt
-command GenSource :r $HOME/.vim/resources/c_source.txt
-command GenHeader :r $HOME/.vim/resources/c_header.txt
 
-
+" command GenDoc :r $HOME/.vim/resources/steelix/c_documentation.txt
 " Coc.nvim
 " caller
 map <Leader>c :call CocLocations('ccls','$ccls/call')<cr>
@@ -205,3 +206,16 @@ nmap <leader>gdb :let @+ = "b " . expand("%") . ":" . line(".")<cr>
 " Disable unsafe commands in project specific vimrc
 set secure
 
+" Allow localvimrc
+let g:localvimrc_ask=1
+let g:localvimrc_whitelist=['/home/lucas/_CODE/Converge/geodude-hw-app', '/home/lucas/_CODE/Converge/steelix-app-workspace']
+let g:localvimrc_sandbox=0
+
+" Setup vim for yml editing
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+" Run black on python save
+augroup black_on_save
+  autocmd!
+  autocmd BufWritePre *.py Black
+augroup end
