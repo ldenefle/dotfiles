@@ -1,0 +1,1 @@
+../../dotfiles/vim/.vim/resources/c_documentation.txt
