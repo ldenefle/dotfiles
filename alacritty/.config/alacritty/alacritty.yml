@@ -149,36 +149,6 @@ colors:
     white: '0xFFFFFF'
 # color_end
 
-# Visual Bell
-#
-# Any time the BEL code is received, Alacritty "rings" the visual bell. Once
-# rung, the terminal background will be set to white and transition back to the
-# default background color. You can control the rate of this transition by
-# setting the `duration` property (represented in milliseconds). You can also
-# configure the transition function by setting the `animation` property.
-#
-# Possible values for `animation`
-# `Ease`
-# `EaseOut`
-# `EaseOutSine`
-# `EaseOutQuad`
-# `EaseOutCubic`
-# `EaseOutQuart`
-# `EaseOutQuint`
-# `EaseOutExpo`
-# `EaseOutCirc`
-# `Linear`
-#
-# To completely disable the visual bell, set its duration to 0.
-#
-# visual_bell:
-#   animation: EaseOutExpo
-#   color: '0xffffff'
-#   duration: 0
-
-# Background opacity
-background_opacity: 1.0
-
 # Key bindings
 #
 # Key bindings are specified as a list of objects. Each binding will specify a
