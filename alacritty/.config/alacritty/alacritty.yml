@@ -149,6 +149,10 @@ colors:
     white: '0xFFFFFF'
 # color_end
 
+# Background opacity
+window:
+  opacity: 1.0
+
 # Key bindings
 #
 # Key bindings are specified as a list of objects. Each binding will specify a
