@@ -18,10 +18,9 @@ dwm_memory () {
 }
 
 dwm_battery () {
-    BAT="/sys/class/power_supply/BAT0/capacity"
+    BAT=/sys/class/power_supply/BAT0/capacity
     if [ -f "$BAT" ]; then
-        echo "Battery";
-        cat $BAT;
+        echo "Battery $(<$BAT)";
     fi
 }
 
@@ -51,7 +50,7 @@ do
     battery=$(dwm_battery)
     [ ! -z "$ble_audio" ] && status="$status^b$RED^^c$BLACK^ "$ble_audio" "
     status="$status^b$BLACK^^c$RED^ "$(dwm_memory)" "
-    [ ! -z "$dwm_battery" ] && status="$status^b$YELLOW^^c$BLACK^ "$(dwm_battery)" "
+    [ ! -z "$battery" ] && status="$status^b$YELLOW^^c$BLACK^ "$battery" "
     status="$status^b$GREEN^^c$BLACK^ "$(dwm_audio)" "
     status="$status^b$BLUE^^c$BLACK^ "$(dwm_time)" "
     status="$status^b$BLACK^^c$BLUE^ "$(dwm_date)" "
