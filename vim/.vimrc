@@ -34,6 +34,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'embear/vim-localvimrc'
+Plug 'vim-scripts/gtags.vim'
 
 " # Buffer / Pane / File Management ####################
 Plug 'junegunn/fzf'
@@ -60,6 +61,9 @@ filetype plugin on
 
 :set hlsearch
 :set hidden
+
+" Leader mapping
+let mapleader = " " " map leader to Space
 
 " Allows per project vimrc
 set exrc
@@ -219,3 +223,10 @@ augroup black_on_save
   autocmd!
   autocmd BufWritePre *.py Black
 augroup end
+
+" Gtags
+let g:Gtags_No_Auto_Jump=1
+nmap <Leader>gd :Gtags <C-R>=expand("<cword>")<CR><CR>
+nmap <Leader>gr :Gtags -r <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>x :cclose<CR>
+
