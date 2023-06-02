@@ -1,4 +1,9 @@
+-- Load comments file
+require 'comments'
+
 vim.opt.completeopt = "menu,menuone,noinsert"
+
+
 
 -- Set up nvim-cmp.
 local cmp = require'cmp'

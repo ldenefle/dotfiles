@@ -7,6 +7,9 @@ vim.g.localvimrc_whitelist = {'/home/lucas/_CODE/Converge/geodude-hw-app', '/hom
 vim.g.localvimrc_sandbox = 0
 
 return require('packer').startup(function(use)
+    -- Package manager
+    use 'wbthomason/packer.nvim'
+
 	-- Syntax / Language Support ##########################
     use 'neovim/nvim-lspconfig'        -- Sane LSP configurations
     use 'hrsh7th/nvim-cmp' -- A completion plugin written in lua
@@ -23,7 +26,7 @@ return require('packer').startup(function(use)
 	use 'goldie-lin/vim-dts'
 	-- Better python highlighting
 	use 'vim-python/python-syntax'
-	use 'psf/black'
+    use { 'psf/black', tag = '23.3.0'}
 	use 'rhysd/vim-clang-format'
 
 	-- UI #################################################
@@ -37,11 +40,10 @@ return require('packer').startup(function(use)
 	use 'Raimondi/delimitMate'
 	use 'tpope/vim-unimpaired'
 	use 'm-pilia/vim-ccls'
-	use 'tpope/vim-commentary'
+    use 'numToStr/Comment.nvim'
 	use 'tpope/vim-surround'
 	use 'tpope/vim-sensible'
 	use 'tpope/vim-repeat'
-	use 'tpope/vim-fugitive'
 	use 'junegunn/vim-easy-align'
 	use 'ntpeters/vim-better-whitespace'
 	use 'fatih/vim-go'
@@ -49,7 +51,6 @@ return require('packer').startup(function(use)
 	use 'vim-scripts/gtags.vim'
 
 	-- Buffer / Pane / File Management ####################
-	use 'junegunn/fzf'
 	use 'junegunn/fzf.vim'
 
 	--" # Panes / Larger features ############################

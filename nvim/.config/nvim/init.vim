@@ -6,6 +6,7 @@
 lua require("plugins")
 lua require("editor")
 lua require("lsp")
+lua require("functions")
 
 colorscheme ayu
 set termguicolors
