@@ -105,3 +105,17 @@ require('lspconfig')['rust_analyzer'].setup{
       ["rust-analyzer"] = {}
     }
 }
+
+require'nvim-treesitter.configs'.setup {
+    ensure_installed = { "c", "cpp", "lua", "devicetree" },
+    sync_install = true,
+    auto_install = true,
+    highlight = {
+        enable = true,
+    },
+    indent = {
+        enable = true,
+    },
+}
+
+vim.treesitter.language.register('devicetree', 'overlay')

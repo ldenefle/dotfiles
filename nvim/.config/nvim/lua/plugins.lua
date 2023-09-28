@@ -19,6 +19,8 @@ return require('packer').startup(function(use)
 	use 'tbastos/vim-lua'
 	use 'LnL7/vim-nix'
 	use 'rust-lang/rust.vim'
+    use 'nvim-treesitter/nvim-treesitter'
+
 	-- For markdown
 	use 'godlygeek/tabular'
 	use 'plasticboy/vim-markdown'
