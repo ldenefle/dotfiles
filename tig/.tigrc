@@ -9,6 +9,7 @@ bind generic <Ctrl-f> scroll-page-down
 bind generic <Ctrl-b> scroll-page-up
 bind generic 0 !@sh -c  "git blame -L %(lineno),+1 %(file) | awk '{print $1}'"
 bind generic 9 !@sh -c "echo -n %(commit) | xclip -selection c"
+bind main A !git-absorb --base %(commit)
 
 bind generic g move-first-line
 bind generic G move-last-line
