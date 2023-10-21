@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# set -euo pipefail
+SEEDBOX_DIR=/media/files
+LOCAL_DIR=/media/backup/media/files
+PLAYLISTS_DIR=~/Documents/Playlists
+
+IP_ADDRESS=192.168.0.100
+
+# Sync songs
+rsync -aP lucas@${IP_ADDRESS}:${SEEDBOX_DIR}/* ${LOCAL_DIR} --progress
+
+# Sync playlists
+declare -a PLAYLISTS=(
+    "Album-Du-Jour"
+    "ambient"
+    "Arabic Funk"
+    "City Pop"
+    "Di N Bi"
+    "Disco Party"
+    "DJ Stuff"
+    "Dubby Dub Dub"
+    "French"
+    "Good Stuff"
+    "Grimey-Garagey"
+    "HipHop Flava"
+    "In da House"
+    "Italo-balearico"
+    "Jazz For Big Brainz"
+    "Lating Stuff"
+    "PC French Touch"
+    "recent"
+    "Rooftop Favs"
+    "Soulful Stuff"
+    "South Africa"
+    "Techno Stuff"
+    "Zouk"
+)
+
+for i in "${PLAYLISTS[@]}"
+do
+    PLAYLIST="${PLAYLISTS_DIR}/${i}.m3u"
+    echo "Syncing ${i} with ${PLAYLIST}"
+    ssh lucas@${IP_ADDRESS} '/opt/navidrome/navidrome --configfile /etc/navidrome/navidrome.toml pls -p "'${i}'"' 2>&1 |
+        awk -v seed_dir=${SEEDBOX_DIR} -v local_dir=${LOCAL_DIR} '$0 ~ seed_dir { gsub(seed_dir, local_dir); print }' > "${PLAYLIST}"
+done
