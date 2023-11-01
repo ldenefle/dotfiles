@@ -14,11 +14,11 @@ if [ ! -z ${BT_SINK} ]; then
   current_profile=$(echo ${BT_SINK} | cut -d "," -f 4)
   case ${current_profile} in
     "<a2dp_sink>")
-      icon="A2DP"
+      icon=""
       next_profile="handsfree_head_unit"
       ;;
     "<handsfree_head_unit>")
-      icon="HFP"
+      icon=""
       next_profile="a2dp_sink"
       ;;
     *)
@@ -38,8 +38,9 @@ if [ ! -z ${BT_SINK} ]; then
       pacmd set-card-profile ${id} ${next_profile}
       ;;
     *)
-     [ ! -z "$battery" ] && icon+=" ~ ${battery}"
-     echo "${icon}"
+      icon += ""
+      [ ! -z "$battery" ] && icon+=" ~ ${battery} 🔋"
+      echo "${icon}"
       ;;
   esac
 else
