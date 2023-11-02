@@ -12,13 +12,14 @@ if [ ! -z ${BT_SINK} ]; then
   # otherwise we do nothing
   id=$(echo ${BT_SINK} | cut -d "," -f 1)
   current_profile=$(echo ${BT_SINK} | cut -d "," -f 4)
+
   case ${current_profile} in
     "<a2dp_sink>")
-      icon=""
+      icon="♫"
       next_profile="handsfree_head_unit"
       ;;
     "<handsfree_head_unit>")
-      icon=""
+      icon=""
       next_profile="a2dp_sink"
       ;;
     *)
