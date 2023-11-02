@@ -29,6 +29,7 @@ export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
 [ -f $HOME/.local/miniconda3/etc/profile.d/conda.sh ] && . $HOME/.local/miniconda3/etc/profile.d/conda.sh
 
 alias l='exa -la'
+alias hx='helix'
 
 # Prompt related stuff
 # Get git branch on the right side
