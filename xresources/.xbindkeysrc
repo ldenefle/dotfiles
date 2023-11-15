@@ -50,7 +50,7 @@
 "maim -s $HOME/Pictures/$(date +%s).png"
     control+shift+4
 
-"i3lock -c 000000"
+"env XSECURELOCK_PASSWORD_PROMPT=disco XSECURELOCK_FONT=Cozette XSECURELOCK_SHOW_HOSTNAME=0 XSECURELOCK_SHOW_USERNAME=0 XSECURELOCK_SHOW_KEYBOARD_LAYOUT=0 XSECURELOCK_DISCARD_FIRST_KEYPRESS=0 xsecurelock"
     Mod4+shift+ x
 
 "$HOME/.local/bin/bluetooth_headphones_status.sh toggle_profile"
