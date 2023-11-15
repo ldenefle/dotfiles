@@ -39,7 +39,7 @@ if [ ! -z ${BT_SINK} ]; then
       pacmd set-card-profile ${id} ${next_profile}
       ;;
     *)
-      icon += ""
+      icon+=" "
       [ ! -z "$battery" ] && icon+=" ~ ${battery} 🔋"
       echo "${icon}"
       ;;
