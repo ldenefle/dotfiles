@@ -1,0 +1,42 @@
+#!/bin/sh
+
+set -xeuo pipefail
+
+USAGE="$(basename "$0") [-h] [-i input] [-o output] -- Copy music with files passed to pipes
+
+where:
+    -h  show this help text
+    -i  input directory
+    -o  output directory
+"
+
+ARGS=":i:o:h"
+
+print_help() {
+    echo "${USAGE}"
+}
+
+fail() {
+    echo $1 >&2
+    exit 1
+}
+
+while getopts ${ARGS} option
+do case $option in
+    h) print_help; exit 0;;
+    i) IN=$OPTARG;;
+    o) OUT=$OPTARG;;
+    ? ) fail "unknown option: $OPTARG";;
+    : ) fail "option missing argument: $OPTARG";;
+    * ) fail "bad state in getopts";;
+esac
+done
+shift "$((OPTIND-1))"
+
+[[ -z "${IN:-}" ]] || [[ -z "${OUT:-}" ]] && fail "Missing input or output"
+
+read WHITELIST
+
+rsync -vvv -avP "${IN}" "${OUT}" --files-from=<(echo ${WHITELIST} | awk 'BEGIN{FS="/"}; {for (i=6; i<NF; i++) printf $i "/"; print $NF}') --no-perms
+
+
