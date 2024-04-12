@@ -9,9 +9,34 @@ export PATH="$HOME/.local/bin:$HOME/_CODE/go/bin:$PATH"
 # #   - Bypass fuzzy finder if there's only one match (--select-1)
 # #   - Exit if there's no match (--exit-0)
 fe() {
-  local files
-	IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
-	[[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+    local files
+    IFS=$'\n' files=($(fzf-tmux --preview 'bat --color=always {}' --query="$1" --multi --select-1 --exit-0))
+    [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}" && print -s vim "${files[@]}"
+}
+
+take() {
+    mkdir -p "$1" && cd "$1"
+}
+
+r() {
+    cd "$(git rev-parse --show-toplevel 2>/dev/null)"
+}
+
+tmp () {
+    [ "$1" = "view" ] && cd /tmp/workspaces && cd $(ls -t | fzf --preview 'ls -A {}') && return 0
+    r="/tmp/workspaces/$(xxd -l3 -ps /dev/urandom)"
+    mkdir -p -p "$r" && pushd "$r"
+}
+
+recently_modified() {
+    recent_file=$(ls -t | head -n1)
+    echo "Most recently modified file: $recent_file"
+}
+
+compress() {
+    if [ -z "$1" ]; then echo "Usage: compress <archive_name.zip> <file1> <file2> ..."
+    else zip -r "$1" "${@:2}"
+    fi
 }
 
 zle			-N		fe
@@ -88,23 +113,34 @@ alias vim='nvim'
 autoload -U compinit && compinit
 source $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fpath=($HOME/.local/share/zsh/plugins/zsh-completions/src $fpath)
-# Appends every command to the history file once it is executed
-setopt inc_append_history
-# Reloads the history whenever you use it
-setopt share_history
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_SPACE
-export SAVEHIST=100000
-export HISTSIZE=100000
-export HISTFILE=$HOME/.local/share/zsh/.zsh_history
 
-# Go 
+
+# History
+setopt EXTENDED_HISTORY      # Write the history file in the ':start:elapsed;command' format.
+setopt INC_APPEND_HISTORY    # Write to the history file immediately, not when the shell exits.
+setopt SHARE_HISTORY         # Share history between all sessions.
+setopt HIST_IGNORE_DUPS      # Do not record an event that was just recorded again.
+setopt HIST_IGNORE_ALL_DUPS  # Delete an old recorded event if a new event is a duplicate.
+setopt HIST_IGNORE_SPACE     # Do not record an event starting with a space.
+setopt HIST_SAVE_NO_DUPS     # Do not write a duplicate event to the history file.
+setopt HIST_VERIFY           # Do not execute immediately upon history expansion.
+setopt APPEND_HISTORY        # append to history file (Default)
+setopt HIST_NO_STORE         # Don't store history commands
+
+SAVEHIST=100000
+HISTSIZE=100000
+HIST_STAMPS="yyyy-mm-dd"
+HISTORY_IGNORE="(ls|cd|pwd|exit|zi|l)*"
+HISTFILE=$HOME/.local/share/zsh/.zsh_history
+
+# Go
 export GOPATH=$HOME/_CODE/go
 
 # Pyenv
 export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+
 # =============================================================================
 #
 # Utility functions for zoxide.
