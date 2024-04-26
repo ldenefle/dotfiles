@@ -79,3 +79,17 @@ vim.api.nvim_create_autocmd(
         desc = 'Run black on saving a python file',
     }
 )
+
+
+-- Setup template plugin
+require('template').setup({
+    temp_dir = '~/.config/nvim/templates',
+    author = 'Lucas Denefle',
+    email = 'ldenefle@gmail.com',
+})
+
+vim.keymap.set('n', '<Leader>t', function()
+    vim.fn.feedkeys(':Template ')
+end, { remap = true})
+
+

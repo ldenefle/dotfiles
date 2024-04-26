@@ -20,7 +20,13 @@ return require('packer').startup(function(use)
 	use 'LnL7/vim-nix'
 	use 'rust-lang/rust.vim'
     use 'nvim-treesitter/nvim-treesitter'
-
+    use {
+        "pmizio/typescript-tools.nvim",
+        requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+        config = function()
+            require("typescript-tools").setup {}
+        end,
+    }
 	-- For markdown
 	use 'godlygeek/tabular'
 	use 'plasticboy/vim-markdown'
@@ -51,11 +57,13 @@ return require('packer').startup(function(use)
 	use 'fatih/vim-go'
 	use 'embear/vim-localvimrc'
 	use 'vim-scripts/gtags.vim'
+    use 'glepnir/template.nvim'
 
 	-- Buffer / Pane / File Management ####################
 	use 'junegunn/fzf.vim'
 
 	--" # Panes / Larger features ############################
 	use 'tpope/vim-fugitive'
+
 end)
 

@@ -88,17 +88,30 @@ require 'lspconfig'.gopls.setup{
         }, },
 }
 
+require 'lspconfig'.nil_ls.setup {
+    autostart = true,
+}
+
+require 'lspconfig'.tsserver.setup{}
+
 require('lspconfig')['rust_analyzer'].setup{
     on_attach = on_attach,
     flags = lsp_flags,
     -- Server-specific settings...
     settings = {
-      ["rust-analyzer"] = {}
+        ["rust-analyzer"] = {
+            check = {
+                command = "clippy";
+            },
+            diagnostics = {
+                enable = true;
+            }
+        }
     }
 }
 
 require'nvim-treesitter.configs'.setup {
-    ensure_installed = { "c", "cpp", "lua", "devicetree" },
+    ensure_installed = { "c", "cpp", "lua", "devicetree", "rust" },
     sync_install = true,
     auto_install = true,
     highlight = {
