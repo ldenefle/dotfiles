@@ -6,6 +6,9 @@ vim.g.localvimrc_ask = 1
 vim.g.localvimrc_whitelist = {'/home/lucas/_CODE/Converge/geodude-hw-app', '/home/lucas/_CODE/Converge/steelix-app-workspace' }
 vim.g.localvimrc_sandbox = 0
 
+-- Disable pesky go plugin shortcuts
+vim.g.go_doc_keywordprg_enabled = 0
+
 return require('packer').startup(function(use)
     -- Package manager
     use 'wbthomason/packer.nvim'
