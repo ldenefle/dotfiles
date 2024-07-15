@@ -37,6 +37,7 @@ if [ ! -z ${BT_SINK} ]; then
   case $CMD in
     "toggle_profile")
       pacmd set-card-profile ${id} ${next_profile}
+      amixer -D pulse sset Master 20%
       ;;
     *)
       icon+=" "
