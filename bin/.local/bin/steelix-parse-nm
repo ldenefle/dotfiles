@@ -1,0 +1,5 @@
+#!/usr/bin/env -S jq -Mf
+
+map(.lastSampled = (.lastSampled | todate)) |
+    map(.lastSeen = (.lastSeen | todate)) |
+    map(.lastExtracted = (.lastExtracted | todate))
