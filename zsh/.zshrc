@@ -55,6 +55,7 @@ export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
 
 alias l='exa -la'
 alias hx='helix'
+alias tempdir='cd $(mktemp -d)'
 
 # Prompt related stuff
 # Get git branch on the right side
@@ -113,6 +114,7 @@ alias vim='nvim'
 autoload -U compinit && compinit
 source $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fpath=($HOME/.local/share/zsh/plugins/zsh-completions/src $fpath)
+fpath=($HOME/.local/share/zsh/completions $fpath)
 
 
 # History
@@ -132,6 +134,10 @@ HISTSIZE=100000
 HIST_STAMPS="yyyy-mm-dd"
 HISTORY_IGNORE="(ls|cd|pwd|exit|zi|l)*"
 HISTFILE=$HOME/.local/share/zsh/.zsh_history
+
+# nnn
+export NNN_OPENER="$HOME/.config/nnn/plugins/nuke"
+export NNN_BMS="c:$HOME/_CODE/Converge"
 
 # Go
 export GOPATH=$HOME/_CODE/go

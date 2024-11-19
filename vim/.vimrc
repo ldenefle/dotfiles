@@ -6,6 +6,8 @@ Plug 'rust-lang/rust.vim'
 " For markdown
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+" DTS highlighting
+Plug 'goldie-lin/vim-dts'
 " Better python highlighting
 Plug 'vim-python/python-syntax'
 Plug 'psf/black', { 'branch': 'stable' } " Python formatting
