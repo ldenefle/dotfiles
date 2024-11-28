@@ -1,0 +1,8 @@
+#!/usr/bin/env -S jq -Mfc 
+
+if .uplink_message.decoded_payload.datalog then
+    {live: false, temps: .uplink_message.decoded_payload.datalog | map({value: .value, time: .observedAt}), time: .received_at[0:19] }
+else
+    {live: true, temps: [ {value: .uplink_message.decoded_payload | .TempC1, time: .received_at[0:19] } ], time: .received_at[0:19] | strptime("%Y-%m-%dT%H:%M:%S") | todate  }
+end
+
