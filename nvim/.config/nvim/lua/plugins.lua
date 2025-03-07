@@ -31,39 +31,37 @@ return require('packer').startup(function(use)
         end,
     }
 	-- For markdown
-	use 'godlygeek/tabular'
 	use 'plasticboy/vim-markdown'
 	-- DTS highlighting
 	use 'goldie-lin/vim-dts'
 	-- Better python highlighting
 	use 'vim-python/python-syntax'
-    use { 'psf/black', tag = '23.3.0'}
 	use 'rhysd/vim-clang-format'
 
 	-- UI #################################################
-	use 'scrooloose/syntastic'
 	use 'Shatur/neovim-ayu'
-	use 'octol/vim-cpp-enhanced-highlight'
 	use 'christoomey/vim-tmux-navigator'
+    use 'echasnovski/mini.nvim'
 
 	-- Editor Features ####################################
-	use 'preservim/nerdtree'
 	use 'Raimondi/delimitMate'
-	use 'tpope/vim-unimpaired'
 	use 'm-pilia/vim-ccls'
     use 'numToStr/Comment.nvim'
 	use 'tpope/vim-surround'
 	use 'tpope/vim-sensible'
 	use 'tpope/vim-repeat'
+	use 'tpope/vim-unimpaired'
 	use 'junegunn/vim-easy-align'
 	use 'ntpeters/vim-better-whitespace'
 	use 'fatih/vim-go'
 	use 'embear/vim-localvimrc'
 	use 'vim-scripts/gtags.vim'
     use 'glepnir/template.nvim'
+    use 'nvim-tree/nvim-tree.lua'
 
 	-- Buffer / Pane / File Management ####################
-	use 'junegunn/fzf.vim'
+	use { 'junegunn/fzf.vim', commit = 'ec75ffbfd50630bf2b8d444d89487e149bacf7f3' }
+	use 'stevearc/oil.nvim'
 
 	--" # Panes / Larger features ############################
 	use 'tpope/vim-fugitive'

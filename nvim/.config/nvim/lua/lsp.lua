@@ -48,7 +48,34 @@ require 'lspconfig'.hls.setup{}
 local on_attach = function(client, bufnr)
     local bufopts = { noremap=true, silent=true, buffer=bufnr }
     -- vim.keymap.set('i', '<Leader>i', vim.lsp.buf.completion)
+    if client:supports_method('textDocument/formatting') then
+      -- Format the current buffer on save
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        buffer = bufnr,
+        callback = function()
+          -- vim.lsp.buf.format({bufnr = bufnr, id = client.id})
+        end,
+      })
+    end
 end
+
+-- vim.api.nvim_create_autocmd('LspAttach', {
+--   callback = function(args)
+--     local client = vim.lsp.get_client_by_id(args.data.client_id)
+--     if client:supports_method('textDocument/implementation') then
+--       -- Create a keymap for vim.lsp.buf.implementation
+--     end
+--     if client:supports_method('textDocument/formatting') then
+--       -- Format the current buffer on save
+--       vim.api.nvim_create_autocmd('BufWritePre', {
+--         buffer = args.buf,
+--         callback = function()
+--           vim.lsp.buf.format({bufnr = args.buf, id = client.id})
+--         end,
+--       })
+--     end
+--   end,
+-- })
 
 
 local lsp_flags = {
@@ -63,11 +90,6 @@ require 'lspconfig'.clangd.setup{
     on_attach = on_attach,
     flags = lsp_flags,
     capabilities = capabilities,
-}
-
-require 'lspconfig'.ccls.setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
 }
 
 
@@ -92,7 +114,7 @@ require 'lspconfig'.nil_ls.setup {
     autostart = true,
 }
 
-require 'lspconfig'.tsserver.setup{}
+require 'lspconfig'.ts_ls.setup{}
 
 require('lspconfig')['rust_analyzer'].setup{
     on_attach = on_attach,
@@ -123,3 +145,18 @@ require'nvim-treesitter.configs'.setup {
 }
 
 vim.treesitter.language.register('devicetree', 'overlay')
+
+require("nvim-tree").setup({
+  sort = {
+    sorter = "case_sensitive",
+  },
+  view = {
+    width = 30,
+  },
+  renderer = {
+    group_empty = true,
+  },
+  filters = {
+    dotfiles = true,
+  },
+})
