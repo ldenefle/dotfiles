@@ -21,7 +21,7 @@ function send_notification {
     # https://en.wikipedia.org/wiki/Box-drawing_character
     bar=$(seq -s "─" $(($volume / 5)) | sed 's/[0-9]//g')
     # Send the notification
-    dunstify -i audio-on -t $TIMEOUT_MS -r 2593 -u normal "Volume: $volume %"
+    dunstify -i ${1} -t $TIMEOUT_MS -r 2593 -u normal "Volume: $volume %"
 }
 
 case $1 in
@@ -30,12 +30,12 @@ case $1 in
 	amixer -D pulse set Master on > /dev/null
 	# Up the volume (+ 5%)
 	amixer -D pulse sset Master 5%+ > /dev/null
-	send_notification
+	send_notification audio-volume-high
 	;;
     down)
 	amixer -D pulse set Master on > /dev/null
 	amixer -D pulse sset Master 5%- > /dev/null
-	send_notification
+	send_notification audio-volume-low
 	;;
     mute)
     	# Toggle mute
