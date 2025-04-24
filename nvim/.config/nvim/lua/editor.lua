@@ -57,6 +57,7 @@ vim.api.nvim_set_keymap('n', '<Leader>ws', ':StripWhitespace<cr>', {})
 
 -- Open file navigator
 vim.api.nvim_set_keymap('n', '<Leader>nt', ':NvimTreeToggle<cr>', {})
+vim.api.nvim_set_keymap('n', '<Leader>o', ':Oil<cr>', {})
 
 -- Autoresize windows
 local wr_group = vim.api.nvim_create_augroup('WinResize', { clear = true })

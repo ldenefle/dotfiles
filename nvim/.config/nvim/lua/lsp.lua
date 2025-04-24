@@ -93,6 +93,7 @@ require 'lspconfig'.clangd.setup{
 }
 
 
+require('lspconfig').ruff.setup {}
 require 'lspconfig'.pyright.setup{}
 
 util = require 'lspconfig/util'
@@ -114,7 +115,7 @@ require 'lspconfig'.nil_ls.setup {
     autostart = true,
 }
 
-require 'lspconfig'.ts_ls.setup{}
+-- require 'lspconfig'.ts_ls.setup{}
 
 require('lspconfig')['rust_analyzer'].setup{
     on_attach = on_attach,
