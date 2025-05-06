@@ -1,0 +1,11 @@
+#!/bin/bash
+
+find . -type f -name '*.mp3' |
+
+find . -type f -name '*.mp3' -exec \
+    bash -c 'dir="$(dirname ${1})";
+        file=${1};
+        new_name=$(ffprobe -loglevel error -show_entries stream_tags:format_tags -of json "${file}" | jq -r ".format.tags | .artist + \" - \" + .title");
+        echo "$new_name";
+        echo "${file} -> $(dirname "${file}")/"${new_name}".mp3";
+        mv "${file}" "$(dirname "${file}")"/"${new_name}".mp3' - {} \;
