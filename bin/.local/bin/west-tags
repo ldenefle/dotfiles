@@ -1,0 +1,65 @@
+#!/bin/bash
+
+check_cmd() {
+    if ! command -v $1 &> /dev/null
+    then
+        echo "$1 could not be found, please install to run the script"
+        exit
+    fi
+
+}
+
+prepare_tag_files() {
+    # This assumes we're in topdir
+    rm -f tags.files 
+    west forall -c "gtags-files -a $PWD/tags.files"
+}
+
+enter_top_dir() {
+    local topdir=
+    topdir=$(west topdir)
+    ret=$?
+    if [[ $ret -ne 0 ]]; then
+        echo no west topdir found >&2
+    fi
+    pushd $topdir
+    return $ret
+}
+
+generate_gtags() {
+    echo "Generating gtags"
+    rm -rf GTAGS GRTAGS GPATH
+    gtags -f "$PWD/tags.files"
+}
+
+generate_cscope() {
+    echo "Generating cscope"
+    rm -rf cscope.out
+    cscope -b -i "$PWD/tags.files"
+}
+
+generate_ctags() {
+    echo "Generating ctags"
+    rm -rf tags
+    ctags -L tags.files
+}
+
+exit_top_dir() {
+    popd
+}
+
+generate_tags() {
+    enter_top_dir
+    prepare_tag_files
+    generate_gtags
+    generate_cscope
+    generate_ctags
+    exit_top_dir
+}
+
+set -euo pipefail
+
+check_cmd gtags
+check_cmd cscope
+check_cmd ctags
+generate_tags
