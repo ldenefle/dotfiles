@@ -3,6 +3,27 @@ require 'comments'
 
 vim.opt.completeopt = "menu,menuone,noinsert"
 
+vim.diagnostic.config({
+    underline = false,
+    virtual_text = true, -- Turn off inline diagnostics
+    float = {
+      border = {
+          {"╔", "FloatBorder"},
+          {"═", "FloatBorder"},
+          {"╗", "FloatBorder"},
+          {"║", "FloatBorder"},
+          {"╝", "FloatBorder"},
+          {"═", "FloatBorder"},
+          {"╚", "FloatBorder"},
+          {"║", "FloatBorder"}
+      },
+      source = "always",
+      update_in_insert = true,
+      severity_sort = true,
+    },
+  })
+
+
 
 
 -- Set up nvim-cmp.
