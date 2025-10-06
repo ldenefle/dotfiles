@@ -58,6 +58,7 @@ return require('packer').startup(function(use)
 	use 'vim-scripts/gtags.vim'
     use 'glepnir/template.nvim'
     use 'nvim-tree/nvim-tree.lua'
+  use 'akinsho/toggleterm.nvim'
 
 	-- Buffer / Pane / File Management ####################
 	use { 'junegunn/fzf.vim', commit = 'ec75ffbfd50630bf2b8d444d89487e149bacf7f3' }

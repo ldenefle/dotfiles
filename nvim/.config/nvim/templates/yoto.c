@@ -1,6 +1,5 @@
 /**
  * @file {{_file_name_}}
- * @author {{_author_}} - {{_email_}}
  * @brief {{_cursor_}}
  * @date {{_date_}}
  *
