@@ -1,6 +1,9 @@
 -- Plugin configuration
 --
 
+-- Custom plugins
+require('custom_plugins')
+
 -- Localvimrc configuration
 vim.g.localvimrc_ask = 1
 vim.g.localvimrc_whitelist = {'/home/lucas/_CODE/Converge/geodude-hw-app', '/home/lucas/_CODE/Converge/steelix-app-workspace' }
@@ -59,6 +62,7 @@ return require('packer').startup(function(use)
     use 'glepnir/template.nvim'
     use 'nvim-tree/nvim-tree.lua'
   use 'akinsho/toggleterm.nvim'
+  use 'nvim-telescope/telescope.nvim'
 
 	-- Buffer / Pane / File Management ####################
 	use { 'junegunn/fzf.vim', commit = 'ec75ffbfd50630bf2b8d444d89487e149bacf7f3' }
@@ -68,4 +72,5 @@ return require('packer').startup(function(use)
 	use 'tpope/vim-fugitive'
 
 end)
+
 

@@ -165,38 +165,98 @@ refresh.callback = function(...)
     orig_refresh(...)
 end
 
-require("oil").setup({
-    view_options = {
-        is_hidden_file = function(name, bufnr)
-            local dir = require("oil").get_current_dir(bufnr)
-            local is_dotfile = vim.startswith(name, ".") and name ~= ".."
-            -- if no local directory (e.g. for ssh connections), just hide dotfiles
-            if not dir then
-                return is_dotfile
-            end
-            -- dotfiles are considered hidden unless tracked
-            if is_dotfile then
-                return not git_status[dir].tracked[name]
-            else
-                -- Check if file is gitignored
-                return git_status[dir].ignored[name]
-            end
-        end,
-    },
-    win_options = {
-        winbar = "%!v:lua.get_oil_winbar()",
-    },
-    keymaps = {
-        ["gd"] = {
-            desc = "Toggle file detail view",
-            callback = function()
-                detail = not detail
-                if detail then
-                    require("oil").set_columns({ "icon", "permissions", "size", "mtime" })
-                else
-                    require("oil").set_columns({ "icon" })
-                end
-            end,
-        },
-    },
+-- Toggleterm configuration
+require("toggleterm").setup({
 })
+
+local Terminal  = require('toggleterm.terminal').Terminal
+local tig = Terminal:new({
+  cmd = "tig",
+  dir = "git_dir",
+  direction = "float",
+  float_opts = {
+    border = "double",
+  },
+  -- function to run on opening the terminal
+  on_open = function(term)
+    vim.cmd("startinsert!")
+    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap = true, silent = true})
+  end,
+  -- function to run on closing the terminal
+  on_close = function(term)
+    vim.cmd("startinsert!")
+  end,
+})
+
+function _tig_toggle()
+  tig:toggle()
+end
+
+vim.api.nvim_set_keymap("n", "<leader>g", "<cmd>lua _tig_toggle()<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap("n", "<leader>nn", "<cmd>ToggleTerm direction=float<CR>", {noremap = true, silent = true})
+
+-- Oil configuration
+require("oil").setup({
+  watch_for_changes = true,
+  keymaps = {
+    ["g?"] = { "actions.show_help", mode = "n" },
+    ["<CR>"] = "actions.select",
+    ["bd"] = { "actions.close", mode = "n" },
+    -- ["<C-t>"] = { "actions.select", opts = { tab = true } },
+    -- ["<C-p>"] = "actions.preview",
+    -- ["<C-c>"] = { "actions.close", mode = "n" },
+    -- ["<C-l>"] = "actions.refresh",
+    ["-"] = { "actions.parent", mode = "n" },
+    ["gs"] = { "actions.change_sort", mode = "n" },
+    ["gx"] = "actions.open_external",
+    ["g."] = { "actions.toggle_hidden", mode = "n" },
+    ["g\\"] = { "actions.toggle_trash", mode = "n" },
+    ["gd"] = {
+      desc = "Toggle file detail view",
+      callback = function()
+        detail = not detail
+        if detail then
+          require("oil").set_columns({ "icon", "permissions", "size", "mtime" })
+        else
+          require("oil").set_columns({ "icon" })
+        end
+      end,
+    },
+  },
+  use_default_keymaps = false,
+  view_options = {
+    is_hidden_file = function(name, bufnr)
+      local dir = require("oil").get_current_dir(bufnr)
+      local is_dotfile = vim.startswith(name, ".") and name ~= ".."
+      -- if no local directory (e.g. for ssh connections), just hide dotfiles
+      if not dir then
+        return is_dotfile
+      end
+      -- dotfiles are considered hidden unless tracked
+      if is_dotfile then
+        return not git_status[dir].tracked[name]
+      else
+        -- Check if file is gitignored
+        return git_status[dir].ignored[name]
+      end
+    end,
+  },
+  win_options = {
+    winbar = "%!v:lua.get_oil_winbar()",
+  },
+})
+
+
+-- Telescope setup
+require("telescope").setup {
+  pickers = {
+    find_files = {
+       find_command = {"rg", "--files", "--sortr=modified"}
+    }
+  }
+}
+local builtin = require('telescope.builtin')
+-- vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
+-- vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
+-- vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
+-- vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })

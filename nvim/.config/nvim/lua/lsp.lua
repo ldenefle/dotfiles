@@ -64,7 +64,7 @@ cmp.setup.cmdline({ '/', '?' }, {
 })
 
 -- Enable LSP configurations
-require 'lspconfig'.hls.setup{}
+vim.lsp.config("hls", {})
 
 local on_attach = function(client, bufnr)
     local bufopts = { noremap=true, silent=true, buffer=bufnr }
@@ -107,19 +107,19 @@ local lsp_flags = {
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- LSP Keymaps
-require 'lspconfig'.clangd.setup{
+vim.lsp.config("clangd", {
     on_attach = on_attach,
     flags = lsp_flags,
     capabilities = capabilities,
-}
+})
 
 
-require('lspconfig').ruff.setup {}
-require 'lspconfig'.pyright.setup{}
+vim.lsp.config("ruff", {})
+vim.lsp.config("right", {})
 
 util = require 'lspconfig/util'
 
-require 'lspconfig'.gopls.setup{
+vim.lsp.config("gopls", {
     cmd = {"gopls", "serve"},
     filetypes = {"go", "gomod"},
     root_dir = util.root_pattern("go.work", "go.mod", ".git"),
@@ -130,15 +130,12 @@ require 'lspconfig'.gopls.setup{
             },
             staticcheck = true,
         }, },
-}
+})
 
-require 'lspconfig'.nil_ls.setup {
-    autostart = true,
-}
 
 -- require 'lspconfig'.ts_ls.setup{}
 
-require('lspconfig')['rust_analyzer'].setup{
+vim.lsp.config('rust_analyzer', {
     on_attach = on_attach,
     flags = lsp_flags,
     -- Server-specific settings...
@@ -152,7 +149,7 @@ require('lspconfig')['rust_analyzer'].setup{
             }
         }
     }
-}
+})
 
 require'nvim-treesitter.configs'.setup {
     ensure_installed = { "c", "cpp", "lua", "devicetree", "rust" },
@@ -167,6 +164,7 @@ require'nvim-treesitter.configs'.setup {
 }
 
 vim.treesitter.language.register('devicetree', 'overlay')
+
 
 require("nvim-tree").setup({
   sort = {
@@ -183,24 +181,6 @@ require("nvim-tree").setup({
   },
 })
 
-require("oil").setup({
-  watch_for_changes = true,
-  keymaps = {
-    ["g?"] = { "actions.show_help", mode = "n" },
-    ["<CR>"] = "actions.select",
-    ["bd"] = { "actions.close", mode = "n" },
-    -- ["<C-t>"] = { "actions.select", opts = { tab = true } },
-    -- ["<C-p>"] = "actions.preview",
-    -- ["<C-c>"] = { "actions.close", mode = "n" },
-    -- ["<C-l>"] = "actions.refresh",
-    ["-"] = { "actions.parent", mode = "n" },
-    ["gs"] = { "actions.change_sort", mode = "n" },
-    ["gx"] = "actions.open_external",
-    ["g."] = { "actions.toggle_hidden", mode = "n" },
-    ["g\\"] = { "actions.toggle_trash", mode = "n" },
-  },
-  use_default_keymaps = false,
-})
 
-require("toggleterm").setup({
-})
+vim.lsp.enable('rust_analyzer')
+vim.lsp.enable('clangd')
