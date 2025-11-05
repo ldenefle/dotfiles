@@ -1,4 +1,4 @@
-export FZF_DEFAULT_COMMAND="fd --type f"
+export FZF_DEFAULT_COMMAND="rg --files --sortr=modified"
 export GIT_EDITOR="nvim"
 export EDITOR="nvim"
 export VISUAL="nvim"
