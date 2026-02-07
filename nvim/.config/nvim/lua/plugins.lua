@@ -12,6 +12,19 @@ vim.g.localvimrc_sandbox = 0
 -- Disable pesky go plugin shortcuts
 vim.g.go_doc_keywordprg_enabled = 0
 
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
+
+local packer_bootstrap = ensure_packer()
+
 return require('packer').startup(function(use)
     -- Package manager
     use 'wbthomason/packer.nvim'
@@ -65,11 +78,18 @@ return require('packer').startup(function(use)
   use 'nvim-telescope/telescope.nvim'
 
 	-- Buffer / Pane / File Management ####################
-	use { 'junegunn/fzf.vim', commit = 'ec75ffbfd50630bf2b8d444d89487e149bacf7f3' }
+	use 'junegunn/fzf.vim'
+  use { 'junegunn/fzf', run = ":call fzf#install()" }
 	use 'stevearc/oil.nvim'
 
 	--" # Panes / Larger features ############################
 	use 'tpope/vim-fugitive'
+
+  -- Automatically set up your configuration after cloning packer.nvim
+  -- Put this at the end after all plugins
+  if packer_bootstrap then
+    require('packer').sync()
+  end
 
 end)
 
