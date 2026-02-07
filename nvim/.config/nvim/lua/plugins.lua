@@ -36,13 +36,6 @@ return require('packer').startup(function(use)
 	use 'LnL7/vim-nix'
 	use 'rust-lang/rust.vim'
     use 'nvim-treesitter/nvim-treesitter'
-    use {
-        "pmizio/typescript-tools.nvim",
-        requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-        config = function()
-            require("typescript-tools").setup {}
-        end,
-    }
 	-- For markdown
 	use 'plasticboy/vim-markdown'
 	-- DTS highlighting
@@ -75,7 +68,6 @@ return require('packer').startup(function(use)
   use 'nvim-telescope/telescope.nvim'
 
 	-- Buffer / Pane / File Management ####################
-	use 'junegunn/fzf.vim'
   use { 'junegunn/fzf', run = ":call fzf#install()" }
 	use 'stevearc/oil.nvim'
 
