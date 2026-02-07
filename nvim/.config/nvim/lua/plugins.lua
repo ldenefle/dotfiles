@@ -65,7 +65,6 @@ return require('packer').startup(function(use)
     use 'glepnir/template.nvim'
     use 'nvim-tree/nvim-tree.lua'
   use 'akinsho/toggleterm.nvim'
-  use 'nvim-telescope/telescope.nvim'
 
 	-- Buffer / Pane / File Management ####################
   use { 'junegunn/fzf', run = ":call fzf#install()" }
