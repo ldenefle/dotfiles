@@ -1,9 +1,6 @@
 -- Plugin configuration
 --
 
--- Custom plugins
-require('custom_plugins')
-
 -- Localvimrc configuration
 vim.g.localvimrc_ask = 1
 vim.g.localvimrc_whitelist = {'/home/lucas/_CODE/Converge/geodude-hw-app', '/home/lucas/_CODE/Converge/steelix-app-workspace' }
