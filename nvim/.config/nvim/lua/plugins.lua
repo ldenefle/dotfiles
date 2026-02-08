@@ -67,7 +67,7 @@ return require('packer').startup(function(use)
   use 'akinsho/toggleterm.nvim'
 
 	-- Buffer / Pane / File Management ####################
-  use { 'junegunn/fzf', run = ":call fzf#install()" }
+  use 'junegunn/fzf'
 	use 'stevearc/oil.nvim'
 
 	--" # Panes / Larger features ############################
