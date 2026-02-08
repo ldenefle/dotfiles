@@ -1,8 +1,15 @@
-export FZF_DEFAULT_COMMAND="rg --files --sortr=modified"
-export GIT_EDITOR="nvim"
-export EDITOR="nvim"
-export VISUAL="nvim"
+(( $+commands[rg] )) && export FZF_DEFAULT_COMMAND="rg --files --sortr=modified"
+if (( $+commands[nvim] )); then
+    export GIT_EDITOR="nvim"
+    export EDITOR="nvim"
+    export VISUAL="nvim"
+fi
 export PATH="$HOME/.local/bin:$HOME/_CODE/go/bin:$PATH"
+
+export ZSH_CUSTOM="$HOME/.config/zsh/custom"
+if [[ $(uname) == "Darwin" ]] && [[ -f "$ZSH_CUSTOM"/os/mac.zsh ]]; then
+    source "$ZSH_CUSTOM"/os/mac.zsh
+fi
 
 # fzf
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
@@ -39,12 +46,18 @@ compress() {
     fi
 }
 
-zle			-N		fe
-bindkey		'^O' 	fe
+if (( $+commands[fzf] )); then
+    zle			-N		fe
+    bindkey		'^O' 	fe
+    source <(fzf --zsh)
 
-source /usr/share/fzf/completion.zsh
-source /usr/share/fzf/key-bindings.zsh
-
+    # Add some colors for fzf
+    export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+ --color=fg:#b3b1ad,bg:#0f1419,hl:#59c2ff
+ --color=fg+:#dadde0,bg+:#34455a,hl+:#ffcc66
+ --color=info:#f9af4f,prompt:#91b362,pointer:#cbccc6
+ --color=marker:#f9af4f,spinner:#f9af4f,header:#d4bfff'
+fi
 
 export MUSIC_DIR="$HOME/Documents/Musique"
 
@@ -53,8 +66,7 @@ export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
 
 [ -f $HOME/.local/miniconda3/etc/profile.d/conda.sh ] && . $HOME/.local/miniconda3/etc/profile.d/conda.sh
 
-alias l='exa -la'
-alias hx='helix'
+(( $+commands[eza] )) && alias l='eza -la'
 alias tempdir='cd $(mktemp -d)'
 
 # Prompt related stuff
@@ -95,26 +107,22 @@ function TRAPINT() {
 setopt AUTO_CD
 
 # Direnv
-eval "$(direnv hook zsh)"
-
-# Add some colors for fzf
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
- --color=fg:#b3b1ad,bg:#0f1419,hl:#59c2ff
- --color=fg+:#dadde0,bg+:#34455a,hl+:#ffcc66
- --color=info:#f9af4f,prompt:#91b362,pointer:#cbccc6
- --color=marker:#f9af4f,spinner:#f9af4f,header:#d4bfff'
+(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
 
 # Converge shortcuts
 alias gd='cd ~/_CODE/Converge/geodude-hw-app'
 alias on='cd ~/_CODE/Converge/onix-hw-app'
 alias ts='cd ~/_CODE/Converge/tilt-sensor-hw-app'
-alias vim='nvim'
+(( $+commands[nvim] )) && alias vim='nvim'
 
 # ZSH
 autoload -U compinit && compinit
-source $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fpath=($HOME/.local/share/zsh/plugins/zsh-completions/src $fpath)
-fpath=($HOME/.local/share/zsh/completions $fpath)
+[[ -f $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
+    source $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[[ -d $HOME/.local/share/zsh/plugins/zsh-completions/src ]] && \
+    fpath=($HOME/.local/share/zsh/plugins/zsh-completions/src $fpath)
+[[ -d $HOME/.local/share/zsh/completions ]] && \
+    fpath=($HOME/.local/share/zsh/completions $fpath)
 
 
 # History
@@ -133,11 +141,14 @@ SAVEHIST=100000
 HISTSIZE=100000
 HIST_STAMPS="yyyy-mm-dd"
 HISTORY_IGNORE="(ls|cd|pwd|exit|zi|l)*"
+[[ -d $HOME/.local/share/zsh ]] || mkdir -p $HOME/.local/share/zsh
 HISTFILE=$HOME/.local/share/zsh/.zsh_history
 
 # nnn
-export NNN_OPENER="$HOME/.config/nnn/plugins/nuke"
-export NNN_BMS="c:$HOME/_CODE/Converge"
+if (( $+commands[nnn] )); then
+    export NNN_OPENER="$HOME/.config/nnn/plugins/nuke"
+    export NNN_BMS="c:$HOME/_CODE/Converge"
+fi
 
 # Go
 export GOPATH=$HOME/_CODE/go
@@ -145,8 +156,9 @@ export GOPATH=$HOME/_CODE/go
 # Pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+(( $+commands[pyenv] )) && eval "$(pyenv init -)"
 
+if (( $+commands[zoxide] )); then
 # =============================================================================
 #
 # Utility functions for zoxide.
@@ -251,6 +263,7 @@ fi
 # To initialize zoxide, add this to your configuration (usually ~/.zshrc):
 #
 # eval "$(zoxide init zsh)"
+fi # end zoxide
 
 # Enable command editing
 autoload -U edit-command-line
