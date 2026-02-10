@@ -67,7 +67,11 @@ return require('packer').startup(function(use)
   use 'akinsho/toggleterm.nvim'
 
 	-- Buffer / Pane / File Management ####################
-  use 'junegunn/fzf'
+  use {
+    'junegunn/fzf.vim',
+    requires = { 'junegunn/fzf', run = ':call fzf#install()' }
+ }
+
 	use 'stevearc/oil.nvim'
 
 	--" # Panes / Larger features ############################
@@ -78,7 +82,7 @@ return require('packer').startup(function(use)
   if packer_bootstrap then
     require('packer').sync()
   end
-
 end)
+
 
 

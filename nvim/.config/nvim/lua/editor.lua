@@ -246,12 +246,11 @@ require("oil").setup({
   },
 })
 
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'c', 'rust', 'cmake', 'go', 'cpp' },
-  callback = function() vim.treesitter.start() end,
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function(args)
+    -- args.buf is the buffer number for the event
+    local ok = pcall(vim.treesitter.start, args.buf)
+    -- If no parser exists, start() errors; pcall prevents noise.
+    -- ok is unused, but keeping it makes intent clear.
+  end,
 })
-
--- vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
--- vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
--- vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
--- vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })

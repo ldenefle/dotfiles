@@ -165,3 +165,4 @@ require'nvim-treesitter'.setup { }
 
 vim.lsp.enable('rust_analyzer')
 vim.lsp.enable('clangd')
+
