@@ -254,3 +254,13 @@ vim.api.nvim_create_autocmd("FileType", {
     -- ok is unused, but keeping it makes intent clear.
   end,
 })
+
+vim.api.nvim_create_user_command("FormatToggle", function()
+  vim.b.disable_autoformat = not vim.b.disable_autoformat
+
+  if vim.b.disable_autoformat then
+    print("Autoformat: OFF")
+  else
+    print("Autoformat: ON")
+  end
+end, {})
