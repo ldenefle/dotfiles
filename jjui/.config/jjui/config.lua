@@ -2,8 +2,19 @@
 function setup(config)
 
   config.action("diff.move_down", function()
-    jjui.builtin.diff.half_page_down()
-  end, {desc= "diff move down", key ="ctrl+f", scope = "diff"} )
+    jjui.ui.preview_scroll_down()
+  end, {desc= "diff move down", key ="ctrl+e", scope = "revisions"} )
+  config.action("diff.move_up", function()
+    jjui.ui.preview_scroll_up()
+  end, {desc= "diff move up", key ="ctrl+y", scope = "revisions"} )
+
+  config.action("diff.move_page_up", function()
+    jjui.ui.preview_half_page_up()
+  end, {desc= "diff move page up", key ="ctrl+b", scope = "revisions"} )
+
+  config.action("diff.move_page_down", function()
+    jjui.ui.preview_half_page_down()
+  end, {desc= "diff move page down", key ="ctrl+f", scope = "revisions"} )
 
   config.action("show diff in diffnav", function()
     local change_id = context.change_id()
