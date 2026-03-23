@@ -4,12 +4,21 @@ if (( $+commands[nvim] )); then
     export EDITOR="nvim"
     export VISUAL="nvim"
 fi
+
 export PATH="$HOME/.local/bin:$HOME/_CODE/go/bin:$PATH"
 
 export ZSH_CUSTOM="$HOME/.config/zsh/custom"
 if [[ $(uname) == "Darwin" ]] && [[ -f "$ZSH_CUSTOM"/os/mac.zsh ]]; then
     source "$ZSH_CUSTOM"/os/mac.zsh
 fi
+
+# Enable vi mode
+bindkey -v
+
+# Enable command editing
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
 
 # fzf
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
@@ -147,7 +156,13 @@ alias ts='cd ~/_CODE/Converge/tilt-sensor-hw-app'
 (( $+commands[nvim] )) && alias vim='nvim'
 
 # ZSH
-autoload -U compinit && compinit
+autoload -Uz compinit
+if [[ -n ~/.zcompdump(#qNmh-24) ]]; then
+  compinit -C
+else
+  compinit
+fi
+
 [[ -f $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
     source $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 [[ -d $HOME/.local/share/zsh/plugins/zsh-completions/src ]] && \
@@ -298,10 +313,3 @@ fi
 # eval "$(zoxide init zsh)"
 fi # end zoxide
 
-# Enable command editing
-autoload -U edit-command-line
-zle -N edit-command-line
-bindkey -M vicmd v edit-command-line
-
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-export PATH="/opt/brew/bin:$PATH"
