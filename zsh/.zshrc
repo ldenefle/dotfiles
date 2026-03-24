@@ -46,6 +46,29 @@ compress() {
     fi
 }
 
+tmpdl() {
+    local tmpdir=$(mktemp -d)
+    local selected
+
+    selected=$(find ~/Downloads -maxdepth 1 -type f -mmin -60 -print0 2>/dev/null | \
+        xargs -0 -I {} basename {} | \
+        fzf --multi --prompt="Select files to move: ")
+
+    if [[ -z "$selected" ]]; then
+        rmdir "$tmpdir"
+        echo "No files selected, cancelled."
+        return 1
+    fi
+
+    echo "$selected" | while IFS= read -r file; do
+        mv ~/Downloads/"$file" "$tmpdir/"
+    done
+
+    cd "$tmpdir"
+    echo "Moved to: $tmpdir"
+    ls -la
+}
+
 if (( $+commands[fzf] )); then
     zle			-N		fe
     bindkey		'^O' 	fe
