@@ -20,6 +20,9 @@ dunst -config ~/.config/dunst/dunstrc &
 # Activate dwm-bar
 .local/bin/dwm-bar &
 
+# Activate calamar
+.local/bin/calamar &
+
 # List dhcp leases
 dhcp-list-leases --daemon &
 

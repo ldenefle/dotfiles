@@ -1,0 +1,9 @@
+theme = "ayu_dark"
+
+[editor]
+rulers = [80, 120]
+mouse = false
+line-number = "relative"
+
+[editor.soft-wrap]
+enable = true

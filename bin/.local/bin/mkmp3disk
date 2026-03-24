@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# set -euo pipefail
+MUSIC_DIR=/media/backup/media/files/
+PLAYLIST_DIR=/media/backup/media/playlists
+MP3_DIR=/home/lucas/Documents/mp3
+
+# Loop through all .m3u files
+while IFS= read -r file; do
+  while IFS= read -r line; do
+    # Skip empty lines and comments
+    [[ -z "$line" || "$line" == \#* ]] && continue
+
+    # Convert to relative path if it starts with MUSIC_DIR
+    if [[ "$line" == "$MUSIC_DIR"* ]]; then
+      rel_path="${line#$MUSIC_DIR/}"
+      relative_paths+="$rel_path"$'\n'
+    fi
+  done < "$file"
+done < <(find "$PLAYLIST_DIR" -type f -name "*.m3u")
+
+
+# Convert each relative path
+while IFS= read -r abs_path; do
+  base_target_dir="$MP3_DIR"
+  ext="${abs_path##*.}"
+
+  echo "${abs_path}"
+  echo "${ext}"
+  if [[ "$ext" == "flac" ]]; then
+
+    # # Extract metadata
+    title=$(metaflac --show-tag=TITLE "$abs_path" | cut -d= -f2-)
+    artist=$(metaflac --show-tag=ARTIST "$abs_path" | cut -d= -f2-)
+    album=$(metaflac --show-tag=ALBUM "$abs_path" | cut -d= -f2-)
+    tracknumber=$(metaflac --show-tag=TRACKNUMBER "$abs_path" | cut -d= -f2-)
+
+    # Sanitize filename
+    safe_title=$(echo "$title" | tr '/\\:*?"<>|' _)
+    safe_artist=$(echo "$artist" | tr '/\\:*?"<>|' _)
+
+    mp3_file="$base_target_dir/${safe_artist} - ${safe_title}.mp3"
+
+    if [[ ! -f "$mp3_file" ]]; then
+      echo "-----------------------"
+      echo "${abs_path}"
+      # Convert and tag
+      ffmpeg -i "${abs_path}" -q:a 2 "$mp3_file"
+      id3v2 -t "$title" -a "$artist" -A "$album" -T "$tracknumber" "$mp3_file"
+      echo "-----------------------"
+    fi
+  fi
+done <<< "${relative_paths}"

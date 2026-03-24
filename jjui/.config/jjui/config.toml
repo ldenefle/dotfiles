@@ -3,3 +3,33 @@ position = "right"
 show_at_start = true
 width_percentage = 50.0
 width_increment_percentage = 5.0
+
+[[actions]]
+name = "select_dir_files"
+lua = '''
+local file = context.file()
+if not file then return end
+
+local dir = file:match("^(.*)/[^/]*$") or ""
+local change_id = context.change_id()
+
+local out, err = jj({"diff", "--summary", "-r", change_id, "--color", "never", "--ignore-working-copy"})
+if err then
+  flash({ text = err, error = true })
+  return
+end
+
+for _, line in ipairs(split_lines(out)) do
+  local f = line:sub(3)  -- strip "M " / "A " / "D " status prefix
+  local f_dir = f:match("^(.*)/[^/]*$") or ""
+  if f_dir == dir then
+    jjui.builtin.revisions.details.select_file({ file = f })
+  end
+end
+'''
+
+[[bindings]]
+action = "select_dir_files"
+key = "ctrl+space"
+scope = "revisions.details"
+desc = "select all files in same directory"
