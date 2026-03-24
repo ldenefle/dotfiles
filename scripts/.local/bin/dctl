@@ -1,0 +1,158 @@
+#!/usr/bin/env bash
+#
+# dctl - devcontainer control
+# A CLI tool for managing devcontainers across projects
+#
+
+set -e
+
+DCTL_DIR="$(dirname "$(realpath "$0")")"
+WORKSPACE_DIR="$PWD"
+
+# --- Helper functions ---
+
+get_container_id() {
+    local running_only="${1:-false}"
+    local filter_flag="-aq"
+    [[ "$running_only" == "true" ]] && filter_flag="-q"
+    docker ps $filter_flag --filter "label=devcontainer.local_folder=${WORKSPACE_DIR}"
+}
+
+get_image() {
+    if [[ -f "$WORKSPACE_DIR/.devcontainer/devcontainer.json" ]]; then
+        jq -r '.image' "$WORKSPACE_DIR/.devcontainer/devcontainer.json"
+    else
+        echo "Error: No .devcontainer/devcontainer.json found in $WORKSPACE_DIR" >&2
+        return 1
+    fi
+}
+
+require_running_container() {
+    local container_id
+    container_id=$(get_container_id true)
+    if [[ -z "$container_id" ]]; then
+        echo "No running devcontainer found for ${WORKSPACE_DIR}"
+        echo "Run 'dctl up' first."
+        exit 1
+    fi
+    echo "$container_id"
+}
+
+# --- Commands ---
+
+cmd_up() {
+    devcontainer up \
+        --workspace-folder "$WORKSPACE_DIR" \
+        --remote-env HOME=/home/.vscode \
+        --remote-env DISPLAY="$DISPLAY" \
+        --mount "type=bind,source=/tmp/.X11-unix,target=/tmp/.X11-unix"
+}
+
+cmd_setup() {
+    local container_id
+    container_id=$(require_running_container)
+
+    local workspace_name
+    workspace_name=$(basename "$WORKSPACE_DIR")
+
+    if [[ -f "$DCTL_DIR/dctl-setup.sh" ]]; then
+        # Copy and run the global setup script
+        docker cp "$DCTL_DIR/dctl-setup.sh" "$container_id:/tmp/dctl-setup.sh"
+        docker exec "$container_id" bash /tmp/dctl-setup.sh "/workspaces/$workspace_name"
+    elif [[ -f "$WORKSPACE_DIR/.devcontainer/setup.sh" ]]; then
+        # Fall back to project-specific setup
+        docker exec "$container_id" bash "/workspaces/$workspace_name/.devcontainer/setup.sh"
+    else
+        echo "No setup script found (checked $DCTL_DIR/dctl-setup.sh and .devcontainer/setup.sh)"
+        exit 1
+    fi
+}
+
+cmd_sh() {
+    require_running_container > /dev/null
+
+    devcontainer exec \
+        --workspace-folder "$WORKSPACE_DIR" \
+        --remote-env HOME=/home/.vscode \
+        --remote-env DISPLAY="$DISPLAY" \
+        zsh
+}
+
+cmd_exec() {
+    local container_id
+    container_id=$(require_running_container)
+
+    docker exec -it "$container_id" "${@:-/bin/bash}"
+}
+
+cmd_status() {
+    local container_id
+    container_id=$(get_container_id)
+
+    if [[ -z "$container_id" ]]; then
+        echo "No devcontainer found for ${WORKSPACE_DIR}"
+        return
+    fi
+
+    docker inspect --format 'Container: {{.Id}}  State: {{.State.Status}}  Image: {{.Config.Image}}' "$container_id"
+}
+
+cmd_nuke() {
+    local container_id
+    container_id=$(get_container_id)
+
+    if [[ -z "$container_id" ]]; then
+        echo "No devcontainer found for ${WORKSPACE_DIR}"
+        exit 1
+    fi
+
+    echo "Stopping container ${container_id}..."
+    docker stop "$container_id" 2>/dev/null || true
+
+    echo "Removing container ${container_id}..."
+    docker rm "$container_id"
+
+    echo "Devcontainer nuked. Run 'dctl up' to rebuild."
+}
+
+cmd_image() {
+    get_image
+}
+
+cmd_help() {
+    cat <<EOF
+dctl - devcontainer control
+
+Usage: dctl <command> [args]
+
+Commands:
+    up       Start the devcontainer
+    setup    Run setup script inside the devcontainer
+    sh       Open a zsh shell in the devcontainer
+    exec     Execute a command in the devcontainer
+    status   Show devcontainer status
+    nuke     Stop and remove the devcontainer
+    image    Show the configured container image
+    help     Show this help message
+
+The workspace directory is determined by the current working directory.
+EOF
+}
+
+# --- Main ---
+
+case "${1:-help}" in
+    up)     cmd_up ;;
+    setup)  cmd_setup ;;
+    sh)     cmd_sh ;;
+    exec)   shift; cmd_exec "$@" ;;
+    status) cmd_status ;;
+    nuke)   cmd_nuke ;;
+    image)  cmd_image ;;
+    help|--help|-h) cmd_help ;;
+    *)
+        echo "Unknown command: $1"
+        cmd_help
+        exit 1
+        ;;
+esac
