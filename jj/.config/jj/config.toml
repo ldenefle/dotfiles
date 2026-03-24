@@ -6,3 +6,6 @@ email = "ldenefle@gmail.com"
 
 [ui]
 default-command = "log"
+
+[aliases]
+lint = ["util", "exec", "--", "bash", "/home/lucas/.config/jj/scripts/jj-lint.sh"]
