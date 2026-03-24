@@ -6,6 +6,11 @@ BLUE="#5e81ac"
 GREEN="#a3be8c"
 YELLOW="#ebcb8b"
 
+dwm_temp() {
+  echo "Temp ";
+  sensors | awk '/^k10temp-pci-/{f=1} f && /Tctl:/ {print $2; exit}';
+}
+
 dwm_root () {
     echo "Root";
     df -H --block-size M /dev/sda3 | tail -1 | awk '{print $3}';
@@ -16,6 +21,7 @@ dwm_memory () {
     home_used=$(df -h $HOME | grep / | awk '{print $5}');
     echo "/ $root_used ~ $home_used";
 }
+
 
 dwm_battery () {
     BAT=/sys/class/power_supply/BAT0/capacity
@@ -48,6 +54,7 @@ do
     status="^f-1^"
     ble_audio=$(dwm_ble_audio)
     battery=$(dwm_battery)
+    status="$status^b$YELLOW^^c$BLACK^ "$(dwm_temp)" "
     [ ! -z "$ble_audio" ] && status="$status^b$RED^^c$BLACK^ "$ble_audio" "
     status="$status^b$BLACK^^c$RED^ "$(dwm_memory)" "
     [ ! -z "$battery" ] && status="$status^b$YELLOW^^c$BLACK^ "$battery" "
