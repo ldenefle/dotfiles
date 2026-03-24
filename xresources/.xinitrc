@@ -27,7 +27,7 @@ dunst -config ~/.config/dunst/dunstrc &
 dhcp-list-leases --daemon &
 
 # Start picom
-picom --daemon --config ~/.config/picom/picom.conf
+#picom --daemon --config ~/.config/picom/picom.conf
 
 # Makes sure to be on the right monitor
 autorandr -c

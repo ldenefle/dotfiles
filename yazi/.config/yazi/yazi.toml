@@ -1,0 +1,13 @@
+[opener]
+audio = [
+  { run = 'mpv "$@"', desc = "mpv", orphan = true },
+]
+pdf = [
+  { run = 'evince "$@"', desc = "evince", orphan = true },
+]
+
+[open]
+rules = [
+  { mime = "audio/*", use = "audio" },
+  { url = "*.pdf", use = "pdf" },
+]

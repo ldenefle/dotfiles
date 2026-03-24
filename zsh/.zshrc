@@ -7,6 +7,12 @@ fi
 
 export PATH="$HOME/.local/bin:$HOME/_CODE/go/bin:$PATH"
 
+if [ -z "$SSH_AUTH_SOCK" ]; then
+    eval "$(ssh-agent -s)" > /dev/null
+    ssh-add ~/.ssh/id_rsa 2>/dev/null
+    ssh-add ~/.ssh/yoto 2>/dev/null
+fi
+
 export ZSH_CUSTOM="$HOME/.config/zsh/custom"
 if [[ $(uname) == "Darwin" ]] && [[ -f "$ZSH_CUSTOM"/os/mac.zsh ]]; then
     source "$ZSH_CUSTOM"/os/mac.zsh
@@ -139,7 +145,7 @@ function TRAPINT() {
 setopt AUTO_CD
 
 # Direnv
-(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
+#(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
 
 # fbd - delete git branch (including remote branches)
 fbd() {
@@ -313,3 +319,10 @@ fi
 # eval "$(zoxide init zsh)"
 fi # end zoxide
 
+ # Enable command editing
+ autoload -U edit-command-line
+ zle -N edit-command-line
+ bindkey -M vicmd v edit-command-line
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+export PATH="/opt/brew/bin:$PATH"

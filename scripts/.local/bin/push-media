@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+DOWNLOADS="${HOME}/Downloads"
+REMOTE="tramontane"
+REMOTE_BASE="/storage"
+export DOWNLOADS  # needed in fzf preview subshell
+
+# Find files/dirs in Downloads modified in the last 3 hours
+mapfile -t candidates < <(
+    find "$DOWNLOADS" -maxdepth 1 -mindepth 1 -mmin -180 -printf '%P\n' | sort
+)
+
+if [[ ${#candidates[@]} -eq 0 ]]; then
+    echo "No items modified in the last 3 hours in $DOWNLOADS"
+    exit 0
+fi
+
+# Multi-select files with fzf
+mapfile -t selected < <(
+    printf '%s\n' "${candidates[@]}" | \
+        fzf --multi \
+            --prompt="Files > " \
+            --header="[Tab] select  [Enter] confirm  [Esc] abort" \
+            --preview='ls -lah "$DOWNLOADS/{}"'
+)
+
+[[ ${#selected[@]} -eq 0 ]] && { echo "Aborted."; exit 0; }
+
+# Select destination: movies or shows
+dest=$(
+    printf 'movies\nshows\n' | \
+        fzf --prompt="Destination > " \
+            --header="[Enter] select destination  [Esc] abort"
+)
+
+[[ -z "$dest" ]] && { echo "Aborted."; exit 0; }
+
+remote_path="${REMOTE_BASE}/${dest}"
+
+# Build source paths
+sources=()
+for f in "${selected[@]}"; do
+    sources+=("$DOWNLOADS/$f")
+done
+
+echo ""
+echo "Syncing to ${REMOTE}:${remote_path}/ ..."
+rsync -avhP "${sources[@]}" "${REMOTE}:${remote_path}/"
