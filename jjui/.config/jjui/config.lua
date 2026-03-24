@@ -1,6 +1,17 @@
 -- ~/.config/jjui/config.lua
 function setup(config)
 
+  config.action("insert", function()
+    local change_id = context.change_id()
+    if not change_id or change_id == "" then
+      flash({ text = "No revision selected", error = true })
+      return
+    end
+
+    jj("new", "-A", change_id)
+    revisions.refresh()
+  end, {desc= "insert", key ="i", scope = "revisions"} )
+
   config.action("diff.move_down", function()
     jjui.ui.preview_scroll_down()
   end, {desc= "diff move down", key ="ctrl+e", scope = "revisions"} )
