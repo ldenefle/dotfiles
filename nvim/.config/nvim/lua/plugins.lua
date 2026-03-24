@@ -1,5 +1,4 @@
 -- Plugin configuration
---
 
 -- Localvimrc configuration
 vim.g.localvimrc_ask = 1
@@ -9,80 +8,50 @@ vim.g.localvimrc_sandbox = 0
 -- Disable pesky go plugin shortcuts
 vim.g.go_doc_keywordprg_enabled = 0
 
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
-end
+local gh = function(x) return 'https://github.com/' .. x end
 
-local packer_bootstrap = ensure_packer()
+vim.pack.add({
+    -- Syntax / Language Support
+    gh('neovim/nvim-lspconfig'),
+    gh('hrsh7th/nvim-cmp'),
+    gh('hrsh7th/cmp-nvim-lsp'),
+    gh('hrsh7th/cmp-vsnip'),
+    gh('hrsh7th/vim-vsnip'),
+    gh('tbastos/vim-lua'),
+    gh('LnL7/vim-nix'),
+    gh('rust-lang/rust.vim'),
+    gh('nvim-treesitter/nvim-treesitter'),
+    gh('plasticboy/vim-markdown'),
+    gh('goldie-lin/vim-dts'),
+    gh('vim-python/python-syntax'),
+    gh('rhysd/vim-clang-format'),
 
-return require('packer').startup(function(use)
-    -- Package manager
-    use 'wbthomason/packer.nvim'
+    -- UI
+    gh('Shatur/neovim-ayu'),
+    gh('christoomey/vim-tmux-navigator'),
+    gh('echasnovski/mini.nvim'),
 
-	-- Syntax / Language Support ##########################
-    use 'neovim/nvim-lspconfig'        -- Sane LSP configurations
-    use 'hrsh7th/nvim-cmp' -- A completion plugin written in lua
-    use 'hrsh7th/cmp-nvim-lsp'
-    use 'hrsh7th/cmp-vsnip'
-    use 'hrsh7th/vim-vsnip'
-	use 'tbastos/vim-lua'
-	use 'LnL7/vim-nix'
-	use 'rust-lang/rust.vim'
-    use 'nvim-treesitter/nvim-treesitter'
-	-- For markdown
-	use 'plasticboy/vim-markdown'
-	-- DTS highlighting
-	use 'goldie-lin/vim-dts'
-	-- Better python highlighting
-	use 'vim-python/python-syntax'
-	use 'rhysd/vim-clang-format'
+    -- Editor Features
+    gh('Raimondi/delimitMate'),
+    gh('p00f/clangd_extensions.nvim'),
+    gh('numToStr/Comment.nvim'),
+    gh('tpope/vim-surround'),
+    gh('tpope/vim-sensible'),
+    gh('tpope/vim-repeat'),
+    gh('tpope/vim-unimpaired'),
+    gh('junegunn/vim-easy-align'),
+    gh('ntpeters/vim-better-whitespace'),
+    gh('fatih/vim-go'),
+    gh('embear/vim-localvimrc'),
+    gh('glepnir/template.nvim'),
+    gh('nvim-tree/nvim-tree.lua'),
+    gh('akinsho/toggleterm.nvim'),
 
-	-- UI #################################################
-	use 'Shatur/neovim-ayu'
-	use 'christoomey/vim-tmux-navigator'
-    use 'echasnovski/mini.nvim'
+    -- Buffer / Pane / File Management
+    gh('junegunn/fzf'),
+    gh('junegunn/fzf.vim'),
+    gh('stevearc/oil.nvim'),
 
-	-- Editor Features ####################################
-	use 'Raimondi/delimitMate'
-	use 'm-pilia/vim-ccls'
-    use 'numToStr/Comment.nvim'
-	use 'tpope/vim-surround'
-	use 'tpope/vim-sensible'
-	use 'tpope/vim-repeat'
-	use 'tpope/vim-unimpaired'
-	use 'junegunn/vim-easy-align'
-	use 'ntpeters/vim-better-whitespace'
-	use 'fatih/vim-go'
-	use 'embear/vim-localvimrc'
-	use 'vim-scripts/gtags.vim'
-    use 'glepnir/template.nvim'
-    use 'nvim-tree/nvim-tree.lua'
-  use 'akinsho/toggleterm.nvim'
-
-	-- Buffer / Pane / File Management ####################
-  use {
-    'junegunn/fzf.vim',
-    requires = { 'junegunn/fzf', run = ':call fzf#install()' }
- }
-
-	use 'stevearc/oil.nvim'
-
-	--" # Panes / Larger features ############################
-	use 'tpope/vim-fugitive'
-
-  -- Automatically set up your configuration after cloning packer.nvim
-  -- Put this at the end after all plugins
-  if packer_bootstrap then
-    require('packer').sync()
-  end
-end)
-
-
-
+    -- Git
+    gh('tpope/vim-fugitive'),
+})

@@ -87,6 +87,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
     if client:supports_method('textDocument/implementation') then
       -- Create a keymap for vim.lsp.buf.implementation ...
     end
+    if client:supports_method('textDocument/definition') then
+      vim.keymap.set('n', '<C-]>', function()
+        local from = { vim.fn.bufnr('%'), vim.fn.line('.'), vim.fn.col('.'), 0 }
+        vim.fn.settagstack(vim.fn.win_getid(), { items = {{ tagname = vim.fn.expand('<cword>'), from = from }} }, 'a')
+        vim.lsp.buf.definition()
+      end, { buffer = args.buf, silent = true })
+    end
     -- Enable auto-completion. Note: Use CTRL-Y to select an item. |complete_CTRL-Y|
     if client:supports_method('textDocument/completion') then
       -- Optional: trigger autocompletion on EVERY keypress. May be slow!
@@ -123,6 +130,8 @@ vim.lsp.config("clangd", {
     flags = lsp_flags,
     capabilities = capabilities,
 })
+
+require('clangd_extensions').setup({})
 
 
 vim.lsp.config("ruff", {})
