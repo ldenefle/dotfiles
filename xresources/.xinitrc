@@ -2,6 +2,9 @@
 xbindkeys
 xset r rate 300 40
 
+# Remap Capslock to escape
+setxkbmap -option caps:escape
+
 # Pause whatever music is playing
 mpc pause
 

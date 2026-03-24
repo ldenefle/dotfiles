@@ -39,6 +39,15 @@
 
 # Examples of commands:
 "$HOME/.local/bin/volume.sh up"
+    Mod1+n
+
+"$HOME/.local/bin/volume.sh down"
+    Mod1+b
+
+"$HOME/.local/bin/volume.sh toggle"
+    Mod1+v
+
+"$HOME/.local/bin/volume.sh up"
     XF86AudioRaiseVolume
 
 "$HOME/.local/bin/volume.sh down"

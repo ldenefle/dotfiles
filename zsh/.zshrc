@@ -109,6 +109,14 @@ setopt AUTO_CD
 # Direnv
 (( $+commands[direnv] )) && eval "$(direnv hook zsh)"
 
+# fbd - delete git branch (including remote branches)
+fbd() {
+  local branches branch
+  branches=$(git for-each-ref --count=30 --sort=-committerdate refs/heads/ --format="%(refname:short)") &&
+  branch=$(echo "$branches" | fzf --multi ) &&
+  git branch -D $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
 # Converge shortcuts
 alias gd='cd ~/_CODE/Converge/geodude-hw-app'
 alias on='cd ~/_CODE/Converge/onix-hw-app'
@@ -174,6 +182,8 @@ function __zoxide_cd() {
     # shellcheck disable=SC2164
     \builtin cd -- "$@"
 }
+
+export _ZO_EXCLUDE_DIRS="/media/*"
 
 # =============================================================================
 #
@@ -269,3 +279,6 @@ fi # end zoxide
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+export PATH="/opt/brew/bin:$PATH"

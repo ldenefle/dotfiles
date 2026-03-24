@@ -115,7 +115,7 @@ def fetch_playlist_filenames(ssh, ip, username, playlist_name, key_filename=None
             yield (playlist_name, Path(line))
 
 def main():
-    playlists = [ "lisa", "Grimey-Garagey"]
+    playlists = [ "lisa", "Grimey-Garagey", "Rooftop Favs", "Afro Stiff"]
     ip = "100.93.225.35"
     # Setup SSH client
     ssh = paramiko.SSHClient()
