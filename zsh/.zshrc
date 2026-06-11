@@ -133,6 +133,7 @@ function zle-line-finish {
 }
 zle -N zle-line-finish
 PROMPT='%(?.%F{blue}%1~%f.%F{red}%1~%f) %B${vim_mode}%b'
+[[ -n "$IN_DEVCONTAINER" ]] && PROMPT="%F{cyan}[devc]%f $PROMPT"
 
 # Fix a bug when you C-c in CMD mode and you'd be prompted with CMD mode indicator, while in fact you would be in INS mode
 # Fixed by catching SIGINT (C-c), set vim_mode to INS and then repropagate the SIGINT, so if anything else depends on it, we will not break it
