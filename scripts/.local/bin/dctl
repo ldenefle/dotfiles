@@ -75,14 +75,17 @@ cmd_sh() {
         --workspace-folder "$WORKSPACE_DIR" \
         --remote-env HOME=/home/.vscode \
         --remote-env DISPLAY="$DISPLAY" \
-        zsh
+        zsh 
 }
 
 cmd_exec() {
-    local container_id
-    container_id=$(require_running_container)
+    require_running_container > /dev/null
 
-    docker exec -it "$container_id" "${@:-/bin/bash}"
+    devcontainer exec \
+        --workspace-folder "$WORKSPACE_DIR" \
+        --remote-env HOME=/home/.vscode \
+        --remote-env DISPLAY="$DISPLAY" \
+        zsh -c "$*"
 }
 
 cmd_status() {
